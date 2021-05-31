@@ -1,0 +1,79 @@
+@import "../root.styles";
+
+.auth-page {
+  @include cover;
+
+  .cover {
+    position: absolute;
+    right: 0;
+    bottom: 20px;
+    width: 1200px;
+    z-index: 7;
+  }
+
+  .message {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 6;
+  }
+
+  .ground {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to top, #e1701a, #ffffff);
+  }
+
+  .auth-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 500px;
+    padding: 0 300px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba($color: #ffffff, $alpha: 0.5);
+
+    &.none {
+      display: none;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      margin: 20px 0 0;
+    }
+
+    Button {
+        transform: translateX(-50%);
+        margin-left: 50%;
+    }
+
+    .alternative {
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 5px;
+    }
+  }
+
+  @media (max-width: 1300px) {
+
+    .cover {
+        width: 750px;
+    }
+
+    .auth-box {
+        padding: 0 100px;
+    }
+  }
+}
