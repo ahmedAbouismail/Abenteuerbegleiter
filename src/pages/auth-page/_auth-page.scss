@@ -1,5 +1,11 @@
 @import "../root.styles";
 
+@mixin msg {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .auth-page {
   @include cover;
 
@@ -12,12 +18,46 @@
   }
 
   .message {
-    position: absolute;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
+    @include msg;
+    top: 45px;
+    width: 100%;
     text-align: center;
     z-index: 6;
+    background-color: #6fe7dd;
+    cursor: default;
+    animation-name: emerge;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+
+    @keyframes emerge {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+
+  .far {
+    @include msg;
+    top: 100px;
+    cursor: pointer;
+    z-index: 6;
+    font-size: 1.2rem;
+    color: #6639a6;
+    animation-name: pull-down;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+
+    @keyframes pull-down {
+      0% {
+        top: -100vh;
+      }
+      100% {
+        top: 100px;
+      }
+    }
   }
 
   .ground {
@@ -40,6 +80,18 @@
     flex-direction: column;
     justify-content: center;
     background-color: rgba($color: #ffffff, $alpha: 0.5);
+    animation-name: pull-right;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+
+    @keyframes pull-right {
+      0% {
+        left: -100vw;
+      }
+      100% {
+        left: 0;
+      }
+    }
 
     &.none {
       display: none;
