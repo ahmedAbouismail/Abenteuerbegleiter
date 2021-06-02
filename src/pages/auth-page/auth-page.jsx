@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import FormAuth from "../../reuseable-components/form-auth/form-auth.components";
-import Button from '../../reuseable-components/button/button.component';
+import FormAuth from "../../reuseable-components/form-auth/form-auth.components"
+import Button from '../../reuseable-components/button/button.component'
 
-import { projectAuth } from "../../firebase/config";
+import { createUserDatabase, projectAuth } from "../../firebase/config"
 
-import { ReactComponent as Cover } from "../../assets/auth-cover.svg";
+import { ReactComponent as Cover } from "../../assets/auth-cover.svg"
 import "./_auth-page.scss";
 
 const AuthPage = () => {
@@ -63,15 +63,26 @@ const AuthPage = () => {
     }
 
     const register = (e) => {
-        console.log(regInput);
         e.preventDefault();
-        projectAuth.createUserWithEmailAndPassword(regInput.emailReg, regInput.passwordReg)
-            .then(() => {
-                reset()
-            })
-            .catch(err => {
-                console.error(err);
-            })
+        if (regInput.passwordReg === regInput.confirmPasswordReg) {
+            projectAuth.createUserWithEmailAndPassword(regInput.emailReg, regInput.passwordReg)
+                .then(() => {
+                    createUserDatabase({
+                        id: projectAuth.currentUser.uid,
+                        displayName: regInput.displayName,
+                        email: regInput.emailReg
+                    })
+                    reset()
+                })
+                .catch(err => {
+                    console.error(err);
+                    if (err.code === "auth/email-already-in-use") {
+                        setMessage("The email address is already in use.")
+                    }
+                })
+        } else {
+            setMessage("Confirmed password does not match!")
+        }
     }
 
     const handleChange = (e) => {
@@ -93,7 +104,7 @@ const AuthPage = () => {
 
     const toggleIsRegistered = () => {
         setIsRegistered(prevValue => !prevValue)
-        reset();
+        reset()
     }
 
     const reset = () => {
@@ -107,7 +118,6 @@ const AuthPage = () => {
             passwordReg: "",
             confirmPasswordReg: ""
         })
-        setMessage("")
     }
 
     return (
@@ -117,7 +127,7 @@ const AuthPage = () => {
                     <h3 className="message">
                         {message}
                     </h3>
-                    <i className="far fa-times-circle" onClick={reset}></i>
+                    <i className="far fa-times-circle" onClick={() => setMessage("")}></i>
                 </>}
             <Cover className="cover" />
             <div className="ground" />
@@ -125,7 +135,7 @@ const AuthPage = () => {
                 <h1>Login</h1>
                 <FormAuth
                     name="email"
-                    type="text"
+                    type="email"
                     value={loginInput.email}
                     handleChange={handleChange}
                     label="Email"
@@ -164,7 +174,7 @@ const AuthPage = () => {
                 />
                 <FormAuth
                     name="emailReg"
-                    type="text"
+                    type="email"
                     value={regInput.emailReg}
                     handleChange={handleChange}
                     label="Email"

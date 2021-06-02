@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { projectAuth } from "./config"
+import { projectFirestore } from "./config"
 
 export const AuthContext = React.createContext()
+
+
+const collection = projectFirestore.collection("users")
 
 const AuthProvider = ({ children }) => {
 
@@ -9,17 +13,28 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         projectAuth.onAuthStateChanged((user) => {
-            setCurrentUser(user)
+            if (user) {
+                collection
+                .where("id", "==", user.uid)
+                .onSnapshot((query) => {
+                    const items = []
+                    query.forEach(doc => {
+                        items.push(doc.data())
+                    })
+                    const [userData] = items
+                    setCurrentUser(userData)
+
+                })
+            }
+
         })
     }, [])
 
-    console.log(currentUser)
-
-
+    // console.log(process.env.NODE_ENV)
 
     return (
         <AuthContext.Provider
-            value={{ currentUser }}
+            value={{ currentUser, setCurrentUser }}
         >
             {children}
         </AuthContext.Provider>

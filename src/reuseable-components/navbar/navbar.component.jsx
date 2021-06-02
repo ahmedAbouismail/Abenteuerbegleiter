@@ -10,12 +10,12 @@ import "./_navbar.styles.scss";
 const Navbar = () => {
 
     const history = useHistory();
-    const { currentUser } = useContext(AuthContext)
-    console.log(currentUser)
+    const { currentUser, setCurrentUser } = useContext(AuthContext)
 
     const signOut = () => {
         projectAuth.signOut()
             .then(() => {
+                setCurrentUser(null)
                 history.push("/")
             })
             .catch(err => {

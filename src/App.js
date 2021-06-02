@@ -7,6 +7,7 @@ import Navbar from "./reuseable-components/navbar/navbar.component";
 
 import './App.css';
 import Homepage from "./pages/homepage/homepage";
+import ProfilePage from "./pages/profile-page/profile-page";
 
 function App() {
 
@@ -22,7 +23,8 @@ function App() {
             <AuthPage /> }
         />
         
-        {!currentUser &&
+        {currentUser ?
+          <Route exact path="/profile" component={ProfilePage} /> :
           <Route path="/:somePath" component={PageNotFound} />}
       </Switch>
     </div>

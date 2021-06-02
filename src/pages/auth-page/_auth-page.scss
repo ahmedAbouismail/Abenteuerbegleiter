@@ -20,11 +20,14 @@
   .message {
     @include msg;
     top: 45px;
-    width: 100%;
     text-align: center;
     z-index: 6;
+    margin: 20px 0;
     background-color: #6fe7dd;
     cursor: default;
+    max-width: fit-content;
+    padding: 10px 20px;
+    border-radius: 10px;
     animation-name: emerge;
     animation-duration: 1s;
     animation-iteration-count: 1;
@@ -41,7 +44,7 @@
 
   .far {
     @include msg;
-    top: 100px;
+    top: 120px;
     cursor: pointer;
     z-index: 6;
     font-size: 1.2rem;
@@ -55,7 +58,7 @@
         top: -100vh;
       }
       100% {
-        top: 100px;
+        top: 120px;
       }
     }
   }
