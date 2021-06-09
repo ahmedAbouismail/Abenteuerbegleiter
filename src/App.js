@@ -8,6 +8,7 @@ import Navbar from "./reuseable-components/navbar/navbar.component";
 import './App.css';
 import Homepage from "./pages/homepage/homepage";
 import ProfilePage from "./pages/profile-page/profile-page";
+import PostPage from './pages/post-page/post-page'
 
 function App() {
 
@@ -23,9 +24,15 @@ function App() {
             <AuthPage /> }
         />
         
+      
         {currentUser ?
           <Route exact path="/profile" component={ProfilePage} /> :
           <Route path="/:somePath" component={PageNotFound} />}
+
+        {currentUser ?
+          <Route exact path="/post" component={PostPage}/> :
+          <Route path="/:somePath" component={PageNotFound} />
+        }
       </Switch>
     </div>
   )
