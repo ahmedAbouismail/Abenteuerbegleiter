@@ -24,9 +24,7 @@ function App() {
             <AuthPage /> }
         />
         
-        if (condition) {
-          
-        }
+      
         {currentUser ?
           <Route exact path="/profile" component={ProfilePage} /> :
           <Route path="/:somePath" component={PageNotFound} />}
