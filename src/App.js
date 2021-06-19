@@ -1,28 +1,55 @@
-import { useContext } from "react";
+import { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
-import { AuthContext } from "./firebase/auth";
+import { connect } from "react-redux"
+import { createStructuredSelector } from "reselect";
 
 import AuthPage from "./pages/auth-page/auth-page";
 import Navbar from "./reuseable-components/navbar/navbar.component";
-
-import './App.css';
 import Homepage from "./pages/homepage/homepage";
 import ProfilePage from "./pages/profile-page/profile-page";
 
-function App() {
+import { projectAuth } from "./firebase/config";
+import { projectFirestore } from "./firebase/config";
 
-  const { currentUser } = useContext(AuthContext)
+import { setCurrentUser } from "./redux/user/user.actions";
+import { selectCurrentUser } from "./redux/user/user.selectors";
+
+import './App.css';
+
+const collection = projectFirestore.collection("users")
+
+function App({ currentUser, setCurrentUser }) {
+
+  useEffect(() => {
+    projectAuth.onAuthStateChanged((user) => {
+      if (user) {
+        collection
+          .where("id", "==", user.uid)
+          .onSnapshot((query) => {
+            const items = []
+            query.forEach(doc => {
+              items.push(doc.data())
+            })
+            const [userData] = items
+            setCurrentUser(userData)
+
+          })
+      }
+
+    })
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <div className="App">
       <Navbar />
       <Switch>
-        <Route exact path="/" render={() => 
+        <Route exact path="/" render={() =>
           currentUser ?
             <Homepage /> :
-            <AuthPage /> }
+            <AuthPage />}
         />
-        
+
         {currentUser ?
           <Route exact path="/profile" component={ProfilePage} /> :
           <Route path="/:somePath" component={PageNotFound} />}
@@ -41,4 +68,12 @@ const PageNotFound = () => {
   )
 }
 
-export default App;
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+})
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

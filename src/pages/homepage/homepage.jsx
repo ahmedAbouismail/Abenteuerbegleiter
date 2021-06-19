@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { AuthContext } from "../../firebase/auth"
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 
-const Homepage = () => {
-
-    const { currentUser } = useContext(AuthContext)
+const Homepage = ({ currentUser }) => {
 
     const style = {
         paddingTop: "70px"
@@ -19,4 +19,8 @@ const Homepage = () => {
     );
 };
 
-export default Homepage;
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser
+})
+
+export default connect(mapStateToProps)(Homepage);

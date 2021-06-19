@@ -1,16 +1,20 @@
-import React, { useContext } from 'react';
-
+import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { Link, useHistory } from "react-router-dom";
-import { AuthContext } from "../../firebase/auth";
+
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+
 import { projectAuth } from "../../firebase/config";
+
 import { ReactComponent as Logo } from "../../assets/logo.svg";
-
 import "./_navbar.styles.scss";
+import { setCurrentUser } from '../../redux/user/user.actions';
 
-const Navbar = () => {
+
+const Navbar = ({ currentUser, setCurrentUser }) => {
 
     const history = useHistory();
-    const { currentUser, setCurrentUser } = useContext(AuthContext)
 
     const signOut = () => {
         projectAuth.signOut()
@@ -38,4 +42,12 @@ const Navbar = () => {
     );
 };
 
-export default Navbar;
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser
+})
+
+const mapDispatchToProps = dispatch => ({
+    setCurrentUser: user => dispatch(setCurrentUser(user))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
