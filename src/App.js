@@ -33,7 +33,6 @@ function App({ currentUser, setCurrentUser }) {
             })
             const [userData] = items
             setCurrentUser(userData)
-
           })
       }
 
