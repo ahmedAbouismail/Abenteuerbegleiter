@@ -1,0 +1,14 @@
+.progress-bar {
+    // position: absolute;
+    // top: 70px;
+    // left: 0;
+    // height: 20px;
+    background-color: #F06292;
+    z-index: 9999;
+    transition: width 1s;
+
+    p {
+        text-align: center;
+        color: #880E4F;
+    }
+}

@@ -9,8 +9,7 @@ import Homepage from "./pages/homepage/homepage";
 import ProfilePage from "./pages/profile-page/profile-page";
 import PostPage from './pages/post-page/post-page'
 
-import { projectAuth } from "./firebase/config";
-import { projectFirestore } from "./firebase/config";
+import { projectAuth, projectFirestore } from "./firebase/config";
 
 import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
