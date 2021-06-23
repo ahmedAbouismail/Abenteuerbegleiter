@@ -1,8 +1,8 @@
 import React from 'react';
 
-import "./_form-auth.styles.scss";
+import "./_form-input.styles.scss";
 
-const FormAuth = ({ handleChange, label, ...otherProps}) => {
+const FormInput = ({ handleChange, label, ...otherProps}) => {
     return (
         <div className="form-auth">
             <input 
@@ -22,4 +22,4 @@ const FormAuth = ({ handleChange, label, ...otherProps}) => {
     );
 };
 
-export default FormAuth;
+export default FormInput;
