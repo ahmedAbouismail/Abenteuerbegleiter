@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import FormInput from "../../reuseable-components/form-input/form-input.component"
 import Button from '../../reuseable-components/button/button.component'
 
-import { createUserDatabase, projectAuth } from "../../firebase/config"
+import { createUserDatabase, projectAuth, signInWithGoogle } from "../../firebase/config"
 
 import { ReactComponent as Cover } from "../../assets/auth-cover.svg"
 import "./_auth-page.scss";
@@ -149,12 +149,23 @@ const AuthPage = () => {
                     label="Password"
                     backcolor="transparent"
                 />
-                <Button
-                    type="submit"
-                    backcolor="#521262"
-                    color="#ffffff"
-                    desc="Login"
-                />
+                <div className="btn-div">
+                    <Button
+                        type="submit"
+                        backcolor="#521262"
+                        color="#ffffff"
+                        desc="Login"
+                        fontSize="18px"
+                    />
+                    <Button
+                        type="button"
+                        backcolor="#3490DE"
+                        color="#ffffff"
+                        desc="Sign in with Google"
+                        fontSize="15px"
+                        onClick={() => signInWithGoogle()}
+                    />
+                </div>
                 <p>
                     Don't have an account yet?
                 </p>

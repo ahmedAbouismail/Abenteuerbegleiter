@@ -110,15 +110,15 @@
       margin: 20px 0 0;
     }
 
-    Button {
-        transform: translateX(-50%);
-        margin-left: 50%;
-    }
-
     .alternative {
       cursor: pointer;
       text-decoration: underline;
       margin-top: 5px;
+    }
+
+    .btn-div {
+      display: flex;
+      justify-content: space-evenly;
     }
   }
 

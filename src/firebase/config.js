@@ -30,4 +30,25 @@ export const createUserDatabase = (user) => {
         })
 }
 
+const provider = new firebase.auth.GoogleAuthProvider()
+provider.setCustomParameters({ prompt: "select_account" })
+export const signInWithGoogle = () => {
+    projectAuth
+        .signInWithPopup(provider)
+        .then(async data => {
+            const userRef = projectFirestore.doc(`users/${data.user.uid}`)
+            const snapShot = await userRef.get()
+            if (!snapShot.exists) {
+                const displayName = data.user.displayName,
+                    email = data.user.email,
+                    id = data.user.uid
+                createUserDatabase({ displayName, email, id })
+            }
+
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
 
