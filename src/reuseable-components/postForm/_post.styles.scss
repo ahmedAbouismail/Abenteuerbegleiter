@@ -1,0 +1,43 @@
+@mixin msg {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+.message {
+
+    @include msg;
+    top: 45px;
+    text-align: center;
+    z-index: 6;
+    margin: 20px 0;
+    background-color: #6fe7dd;
+    cursor: default;
+    max-width: fit-content;
+    padding: 10px 20px;
+    border-radius: 10px;
+    animation-name: emerge;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+}
+
+.far {
+    @include msg;
+    top: 120px;
+    cursor: pointer;
+    z-index: 8;
+    font-size: 1.2rem;
+    color: #6639a6;
+    animation-name: pull-down;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+
+    @keyframes pull-down {
+      0% {
+        top: -100vh;
+      }
+      100% {
+        top: 120px;
+      }
+    }
+  }
