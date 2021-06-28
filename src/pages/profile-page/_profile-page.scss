@@ -8,6 +8,7 @@
     background-color: #fcecdd;
     margin: 0;
     text-align: center;
+    z-index: 5;
 
     span {
       margin: 0;
@@ -24,7 +25,7 @@
   .edit-profile {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 60%;
     transform: translate(-50%, -50%);
     width: 70vw;
     height: 70vh;
@@ -32,6 +33,7 @@
     border: solid 5px #7c4dff;
     border-radius: 26px;
     overflow-x: auto;
+    z-index: 4;
 
     .left-side {
       width: 40%;
@@ -115,7 +117,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #e1f5fe;
+        background-color: #e1f4ff;
         padding: 20px;
         border-radius: 10px;
         margin-bottom: 10px;
@@ -138,6 +140,15 @@
     width: 100vw;
     height: 100vh;
     background: linear-gradient(to top, #b388ff, #ffffff);
+    z-index: 1;
+  }
+
+  .cover {
+    position: absolute;
+    left: -15%;
+    bottom: 0;
+    width: 80%;
+    z-index: 4;
   }
 
   @media (max-width: 1300px) {

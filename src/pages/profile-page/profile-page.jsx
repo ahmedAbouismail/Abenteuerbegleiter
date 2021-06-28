@@ -8,6 +8,7 @@ import { projectFirestore, timestamp } from '../../firebase/config';
 
 import ProgressBarComponent from '../../reuseable-components/progress-bar/progress-bar.component';
 import DefaultAvatar from "../../assets/default-avatar.svg"
+import { ReactComponent as Cover } from "../../assets/profile-cover.svg"
 
 import "./_profile-page.scss"
 
@@ -90,9 +91,8 @@ const ProfilePage = ({ currentUser }) => {
                     <span onClick={() => setError("")}>X</span>
                 </div>
             }
-            <div className="ground">
-
-            </div>
+            <div className="ground" />
+            <Cover className="cover" />
             <div className="edit-profile">
                 <div className="left-side">
                     <div className={"img-wrap"}
