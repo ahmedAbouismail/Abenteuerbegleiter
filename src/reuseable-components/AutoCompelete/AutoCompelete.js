@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import isEmpty from 'lodash.isempty';
 
 // components:
-import Marker from '../reuseable-components/Marker/Marker';
+import Marker from '../Marker/Marker';
 
 // examples:
-import GoogleMap from '../reuseable-components/google-map/GoogleMap';
-import AutoComplete from '../reuseable-components/google-autocomplete/Autocomplete';
+import GoogleMap from '../google-map/GoogleMap';
+import AutoComplete from '../google-autocomplete/Autocomplete';
 
 // consts
-import LOS_ANGELES_CENTER from '../const/la_center';
+import LOS_ANGELES_CENTER from '../../const/la_center';
 
 class Autocomplete extends Component {
   constructor(props) {
@@ -32,6 +32,7 @@ class Autocomplete extends Component {
   };
 
   addPlace = (place) => {
+    this.props.getLocation(place)
     this.setState({ places: [place] });
     console.log(place);
   };
@@ -42,9 +43,13 @@ class Autocomplete extends Component {
     } = this.state;
     return (
       <>
+      <div>
+
+      
         {mapApiLoaded && (
           <AutoComplete map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />
         )}
+
         <GoogleMap
           defaultZoom={10}
           defaultCenter={LOS_ANGELES_CENTER}
@@ -65,6 +70,8 @@ class Autocomplete extends Component {
               />
             ))}
         </GoogleMap>
+
+      </div>
       </>
     );
   }

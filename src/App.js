@@ -7,13 +7,14 @@ import AuthPage from "./pages/auth-page/auth-page";
 import Navbar from "./reuseable-components/navbar/navbar.component";
 import Homepage from "./pages/homepage/homepage";
 import ProfilePage from "./pages/profile-page/profile-page";
-import PostPage from './pages/post-page/post-page'
-
+import PostPage from './pages/creatPost-page/creatPost-page'
+import postsPage from './pages/posts-page/postsPage'
 import { projectAuth } from "./firebase/config";
 import { projectFirestore } from "./firebase/config";
 
 import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
+
 
 import './App.css';
 
@@ -55,7 +56,12 @@ function App({ currentUser, setCurrentUser }) {
           <Route path="/:somePath" component={PageNotFound} />}
 
         {currentUser ?
-          <Route exact path="/post" component={PostPage}/> :
+          <Route exact path="/creatPost" component={PostPage}/> :
+          <Route path="/:somePath" component={PageNotFound} />
+        }
+
+        {currentUser ?
+          <Route exact path="/posts" component={postsPage}/> :
           <Route path="/:somePath" component={PageNotFound} />
         }
       </Switch>
