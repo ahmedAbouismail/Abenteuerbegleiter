@@ -52,12 +52,4 @@ export const signInWithGoogle = () => {
 }
 
 
-// export const createPostDatebase = (post)=> {
-//     const collection = projectFirestore.collection("posts")
-//     collection.doc(post.id).set(post).catch(err=>{
-//         console.error(err);
-//     })
-// }
-
-
 

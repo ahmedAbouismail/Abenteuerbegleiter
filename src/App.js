@@ -52,18 +52,13 @@ function App({ currentUser, setCurrentUser }) {
         />
 
         {currentUser ?
-          <Route exact path="/profile" component={ProfilePage} /> :
+          <Switch>
+            <Route exact path="/profile" component={ProfilePage} />
+            <Route exact path="/createPost" component={PostPage} />
+            <Route exact path="/posts" component={postsPage} />
+          </Switch> :
           <Route path="/:somePath" component={PageNotFound} />}
 
-        {currentUser ?
-          <Route exact path="/creatPost" component={PostPage}/> :
-          <Route path="/:somePath" component={PageNotFound} />
-        }
-
-        {currentUser ?
-          <Route exact path="/posts" component={postsPage}/> :
-          <Route path="/:somePath" component={PageNotFound} />
-        }
       </Switch>
     </div>
   )

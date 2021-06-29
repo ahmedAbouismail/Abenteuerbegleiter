@@ -17,7 +17,7 @@ const PostPage = ()=>{
         
       
             <div 
-            // className="exm"
+            className="exm"
             >
                 {/* <Autocomplete/> */}
                 <CreatePost/>

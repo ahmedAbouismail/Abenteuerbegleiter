@@ -3,5 +3,9 @@
 }
 
 .exm{
-    margin-top: 1000px;
+    margin-top: 1100px;
+
+    @media (max-width: 1300px) {
+        margin-top: 750px;
+    }
 }
