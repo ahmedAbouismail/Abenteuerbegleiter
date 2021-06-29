@@ -38,7 +38,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 
     return (
         <div className="navbar">
-            <Link className="logo-wrap" to="/">
+            <Link className="logo-wrap" to="/" onClick={() => setOpenDropdown(false)}>
                 <Logo className="logo" />
             </Link>
             <div className="menus">
