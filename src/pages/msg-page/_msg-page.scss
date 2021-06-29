@@ -1,0 +1,6 @@
+@import "../root.styles";
+
+.msg-page {
+    @include cover;
+    background-color: aqua;
+}

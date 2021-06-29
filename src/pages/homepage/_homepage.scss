@@ -1,9 +1,12 @@
+@import "../root.styles";
+
 .homepage {
     display: flex;
     min-height: 93vh;
     padding-top: 70px;
     width: 100vw;
     background-color: #FCE4EC;
+    @include transition;
 
     .left {
         background-color: #E1BEE7;
@@ -46,5 +49,24 @@
         background-color: #E1BEE7;
         padding: 20px;
         width: 20%;
+    }
+
+    @media (max-width: 768px) {
+        .left {
+            .img-wrap {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    }
+
+    @media (max-width: 500px) {
+        .left {
+            display: none;
+        }
+
+        .right {
+            display: none;
+        }
     }
 }

@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import "../root.styles";
 
 .profile-page {
   padding-top: 70px;
+  @include transition;
 
   .error {
     width: 100%;
@@ -158,6 +160,45 @@
           height: 200px;
           width: 200px;
         }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .cover {
+      display: none;
+    }
+
+    .edit-profile {
+      left: 50%;
+
+      .left-side {
+        .img-wrap {
+          width: 150px;
+          height: 150px;
+        }
+      }
+
+      .right-side {
+        padding: 20px;
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    .edit-profile {
+      flex-direction: column;
+      width: 80vw;
+      height: 80vh;
+
+      .left-side {
+        width: fit-content;
+        border-radius: 0;
+      }
+
+      .right-side {
+        width: fit-content;
+        border-radius: 0;
       }
     }
   }

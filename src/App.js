@@ -9,6 +9,8 @@ import Homepage from "./pages/homepage/homepage";
 import ProfilePage from "./pages/profile-page/profile-page";
 import PostPage from './pages/creatPost-page/creatPost-page'
 import postsPage from './pages/posts-page/postsPage'
+import MsgPage from "./pages/msg-page/msg-page";
+
 import { projectAuth } from "./firebase/config";
 import { projectFirestore } from "./firebase/config";
 
@@ -56,6 +58,7 @@ function App({ currentUser, setCurrentUser }) {
             <Route exact path="/profile" component={ProfilePage} />
             <Route exact path="/createPost" component={PostPage} />
             <Route exact path="/posts" component={postsPage} />
+            <Route exact path="/messages" component={MsgPage} />
           </Switch> :
           <Route path="/:somePath" component={PageNotFound} />}
 
