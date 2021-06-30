@@ -36,6 +36,11 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
         history.push("/profile")
     }
 
+    const toMessages = () => {
+        setOpenDropdown(false)
+        history.push("/chats")
+    }
+
     return (
         <div className="navbar">
             <Link className="logo-wrap" to="/" onClick={() => setOpenDropdown(false)}>
@@ -62,6 +67,10 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
                     <div className="dropdown-menu" onClick={toProfile}>
                         <i className="fas fa-user-circle"></i>
                         <span>Profile</span>
+                    </div>
+                    <div className="dropdown-menu" onClick={toMessages}>
+                        <i className="far fa-comments"></i>
+                        <span>Chats</span>
                     </div>
                     <div className="dropdown-menu" onClick={signOut}>
                         <i className="fas fa-door-open"></i>

@@ -1,0 +1,179 @@
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { v4 as uuidv4 } from "uuid"
+
+import { projectFirestore, timestamp } from '../../../firebase/config';
+
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from '../../../redux/user/user.selectors';
+
+import DefaultAvatar from "../../../assets/default-avatar.svg"
+import "./_rooms.styles.scss"
+import { identifier } from '@babel/types';
+
+const users = projectFirestore.collection("users")
+const chatRooms = projectFirestore.collection("chatRooms")
+
+const Rooms = ({ currentUser }) => {
+
+    const [foundAccounts, setFoundAccounts] = useState([])
+    const [name, setName] = useState("")
+    const [rooms, setRooms] = useState([])
+    const [contactedPeople, setContactedPeople] = useState([])
+
+    useEffect(() => {
+        getChatRooms()
+        // eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
+        getPeople()
+    }, [rooms])
+
+    const getPeople = () => {
+        const people = []
+        rooms.forEach((room, r) => {
+            room.users.forEach((user, u) => {
+                let tempUser = null
+                user.onSnapshot(snap => {
+                    tempUser = snap.data()
+                    people.push(tempUser)
+
+                    if (u === room.users.length - 1 && r === rooms.length - 1) {
+                        setContactedPeople(people) // set must be in the .then()
+                    }
+                })
+            })
+        })
+    }
+
+    const getChatRooms = () => {
+        chatRooms
+            .where("uids", "array-contains", currentUser.id)
+            // .orderBy("lastUpdate", "desc")
+            .onSnapshot((querySnapshot) => {
+                let items = []
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data()
+                    items.push(data)
+                    getPeople()
+                })
+                setRooms(items)
+            })
+    }
+
+    const searchAccount = (e) => {
+        const tempName = e.target.value
+        setName(tempName)
+
+        users
+            .where("displayName", "==", tempName)
+            .onSnapshot((querySnapshot) => {
+                const items = [];
+                querySnapshot.forEach(doc => {
+                    items.push(doc.data())
+                })
+                setFoundAccounts(items)
+            })
+    }
+
+    const selectUserToChatWith = (otherAccount) => {
+        const room = {
+            users: [users.doc(currentUser.id), users.doc(otherAccount.id)],
+            uids: [currentUser.id, otherAccount.id],
+            lastUpdate: timestamp(),
+            id: uuidv4()
+        }
+        if (rooms && rooms.length > 0) {
+            let exist = false
+            for (let index = 0; index < rooms.length; index++) {
+                if (rooms[index].uids.includes(currentUser.id) && rooms[index].uids.includes(otherAccount.id)) {
+                    exist = true
+                    break
+                }
+            }
+            console.log(exist);
+            if (!exist) {
+                chatRooms
+                    .doc(room.id)
+                    .set(room)
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        } else {
+            console.log("room zero");
+            chatRooms
+                .doc(room.id)
+                .set(room)
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+    }
+
+    const getPerson = (uids) => {
+        console.log(uids);
+        const [otherId] = uids.filter(item => item !== currentUser.id)
+        const [person] = contactedPeople.filter(item => item.id === otherId)
+        return person
+    }
+
+    return (
+        <div className="rooms">
+            <div className="search-div">
+                <div className="search">
+                    <input
+                        placeholder="Search for username..."
+                        value={name}
+                        onChange={searchAccount}
+                    />
+                    {name && <span onClick={() => setName("")}>X</span>}
+                </div>
+                <div className="found-accounts">
+                    {(name) && (
+                        (foundAccounts && foundAccounts.length > 0) ?
+                            foundAccounts.map((account, a) => (
+                                <div
+                                    className="account"
+                                    key={a}
+                                    onClick={() => selectUserToChatWith(account)}
+                                >
+                                    <span>{account.displayName}</span>
+                                    <div className="img-wrap">
+                                        {account.picUrl ? <img src={account.picUrl} alt="profile-pic" /> :
+                                            <img src={DefaultAvatar} alt="default-avatar" />}
+                                    </div>
+                                </div>
+                            )) :
+                            <div className="account">User not found</div>)
+                    }
+                </div>
+            </div>
+            <div className="conversations-collection">
+                {(contactedPeople && contactedPeople.length > 0) &&
+                    (rooms && rooms.length > 0) &&
+                    rooms.map((room, r) => (
+                        <div className="room" key={r}>
+                            <span>
+                                {
+                                    room.uids && getPerson(room.uids).displayName
+                                }
+                            </span>
+                            <div className="img-wrap">
+                                {getPerson(room.uids).picUrl ?
+                                    <img src={getPerson(room.uids).picUrl} alt="profile-pic" /> :
+                                    <img src={DefaultAvatar} alt="default-avatar" />}
+                            </div>
+                        </div>
+                    ))}
+            </div>
+        </div>
+    );
+};
+
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser
+})
+
+export default connect(mapStateToProps)(Rooms);

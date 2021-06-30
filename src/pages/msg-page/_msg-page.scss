@@ -2,5 +2,6 @@
 
 .msg-page {
     @include cover;
-    background-color: aqua;
+    top: 70px;
+    display: flex;
 }

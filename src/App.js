@@ -58,7 +58,7 @@ function App({ currentUser, setCurrentUser }) {
             <Route exact path="/profile" component={ProfilePage} />
             <Route exact path="/createPost" component={PostPage} />
             <Route exact path="/posts" component={postsPage} />
-            <Route exact path="/messages" component={MsgPage} />
+            <Route exact path="/chats" component={MsgPage} />
           </Switch> :
           <Route path="/:somePath" component={PageNotFound} />}
 
