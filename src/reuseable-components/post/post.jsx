@@ -18,12 +18,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import { projectFirestore } from "../../firebase/config"
 import "firebase/firestore"
-import firebase from "firebase/app"
 import { connect } from 'react-redux';
-import { createStructuredSelector } from "reselect";
-import { selectCurrentUser } from "../../redux/user/user.selectors";
-import {firestoreConnect} from 'react-redux-firebase'
-import {compose} from 'redux'
 
 // import {ReadAllPostsFromDB} from './Db'
 const useStyles = makeStyles((theme) => ({
@@ -78,6 +73,7 @@ const Post = ({currentUser}) => {
 
     useEffect(()=>{
         readAllPostsFromDB();
+        // eslint-disable-next-line
     }, [])
    
   const classes = useStyles();
@@ -98,7 +94,7 @@ const Post = ({currentUser}) => {
      var posts = projectFirestore.collectionGroup("postsData");
      posts.get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-            const title = doc.data(). title
+            const title = doc.data().title
             const context = doc.data().context
             const location = doc.data().location
             

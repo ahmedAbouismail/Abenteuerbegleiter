@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
 .rooms {
-  width: 20%;
+  max-width: 20%;
+  min-width: 20%;
   background-color: #b39ddb;
   position: relative;
 
@@ -28,6 +29,10 @@
         width: 90%;
         font-size: 18px;
         font-family: "Montserrat", sans-serif;
+
+        @media (max-width: 1300px) {
+          font-size: 16px;
+        }
       }
 
       span {
@@ -82,14 +87,20 @@
     height: fit-content;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 
     .room {
-      border: solid 1px #311B92;
+      border: solid 1px #673AB7;
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
+      padding: 10px;
       cursor: pointer;
+
+      &.selected {
+        background-color: #673AB7;
+        color: white;
+      }
 
       .img-wrap {
         position: relative;

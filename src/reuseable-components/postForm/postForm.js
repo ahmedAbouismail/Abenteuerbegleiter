@@ -1,10 +1,9 @@
 import React from 'react'
-import { render } from "@testing-library/react"
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { isEmpty, useFirestore } from "react-redux-firebase";
-import { connect, useSelector } from "react-redux";
+import { isEmpty } from "react-redux-firebase";
+import { connect } from "react-redux";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import { makeStyles } from '@material-ui/core/styles';
@@ -28,9 +27,6 @@ const CreatePost = ({ currentUser }) => {
   const [state, setstate] = React.useState(initialState);
   const [location, setLocation] = React.useState(initialPlaceState);
   const [message, setMessage] = React.useState("");
-
-
-  const collec = projectFirestore.collection("posts")
 
   const useStyles = makeStyles((theme) => ({
     button: {
@@ -78,7 +74,7 @@ const CreatePost = ({ currentUser }) => {
     // }else{
     const timestamp = firebase.firestore.Timestamp.fromDate(new Date()).toDate();
     // console.log("timstamp", timestamp);
-    const result = projectFirestore.collection("posts")
+    projectFirestore.collection("posts")
       .doc(currentUser.id)
       .collection("postsData")
       // .doc(state["postTitle"] + " " + timestamp)
@@ -127,7 +123,7 @@ const CreatePost = ({ currentUser }) => {
           label="Title"
           variant="outlined"
           value={state["postTitle"]}
-          error={state["postTitle"] == ""}
+          error={state["postTitle"] === ""}
           onChange={handleChange}
         />
         <TextField
@@ -138,7 +134,7 @@ const CreatePost = ({ currentUser }) => {
           label="Text"
           variant="outlined"
           value={state["postText"]}
-          error={state["postText"] == ""}
+          error={state["postText"] === ""}
           onChange={handleChange}
         />
         <Button

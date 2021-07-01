@@ -2,9 +2,8 @@
 
 .homepage {
     display: flex;
-    min-height: 93vh;
-    padding-top: 70px;
-    width: 100vw;
+    @include cover;
+    top: 70px;
     background-color: #FCE4EC;
     @include transition;
 

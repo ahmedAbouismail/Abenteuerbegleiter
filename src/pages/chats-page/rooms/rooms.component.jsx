@@ -9,12 +9,12 @@ import { selectCurrentUser } from '../../../redux/user/user.selectors';
 
 import DefaultAvatar from "../../../assets/default-avatar.svg"
 import "./_rooms.styles.scss"
-import { identifier } from '@babel/types';
 
 const users = projectFirestore.collection("users")
 const chatRooms = projectFirestore.collection("chatRooms")
+const chats = projectFirestore.collection("chats")
 
-const Rooms = ({ currentUser }) => {
+const Rooms = ({ currentUser, setConversation, conversation }) => {
 
     const [foundAccounts, setFoundAccounts] = useState([])
     const [name, setName] = useState("")
@@ -22,32 +22,6 @@ const Rooms = ({ currentUser }) => {
     const [contactedPeople, setContactedPeople] = useState([])
 
     useEffect(() => {
-        getChatRooms()
-        // eslint-disable-next-line
-    }, [])
-
-    useEffect(() => {
-        getPeople()
-    }, [rooms])
-
-    const getPeople = () => {
-        const people = []
-        rooms.forEach((room, r) => {
-            room.users.forEach((user, u) => {
-                let tempUser = null
-                user.onSnapshot(snap => {
-                    tempUser = snap.data()
-                    people.push(tempUser)
-
-                    if (u === room.users.length - 1 && r === rooms.length - 1) {
-                        setContactedPeople(people) // set must be in the .then()
-                    }
-                })
-            })
-        })
-    }
-
-    const getChatRooms = () => {
         chatRooms
             .where("uids", "array-contains", currentUser.id)
             // .orderBy("lastUpdate", "desc")
@@ -56,11 +30,31 @@ const Rooms = ({ currentUser }) => {
                 querySnapshot.forEach((doc) => {
                     const data = doc.data()
                     items.push(data)
-                    getPeople()
                 })
                 setRooms(items)
             })
-    }
+    }, [currentUser.id])
+
+    useEffect(() => {
+        const people = []
+        rooms.forEach((room, r) => {
+            room.users.forEach((user, u) => {
+                let tempUser = null
+                user.get()
+                    .then(snap => {
+                        tempUser = snap.data()
+
+                        if (tempUser.id !== currentUser.id) {
+                            people.push(tempUser)
+                        }
+
+                        if (u === room.users.length - 1 && r === rooms.length - 1) {
+                            setContactedPeople(people) // set must be in the .then()
+                        }
+                    })
+            })
+        })
+    }, [rooms, currentUser.id])
 
     const searchAccount = (e) => {
         const tempName = e.target.value
@@ -97,27 +91,48 @@ const Rooms = ({ currentUser }) => {
                 chatRooms
                     .doc(room.id)
                     .set(room)
+                    .then(() => {
+                        setName("")
+                    })
                     .catch(err => {
                         console.log(err);
                     })
+                chats
+                    .doc(room.id)
+                    .set({ id: room.id })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                setConversation(room)
             }
         } else {
             console.log("room zero");
             chatRooms
                 .doc(room.id)
                 .set(room)
+                .then(() => {
+                    setName("")
+                })
                 .catch(err => {
                     console.log(err);
                 })
+            chats
+                .doc(room.id)
+                .set({ id: room.id })
+                .catch(err => {
+                    console.log(err);
+                })
+            setConversation(room)
         }
     }
 
     const getPerson = (uids) => {
-        console.log(uids);
         const [otherId] = uids.filter(item => item !== currentUser.id)
         const [person] = contactedPeople.filter(item => item.id === otherId)
         return person
     }
+
+    console.log(contactedPeople);
 
     return (
         <div className="rooms">
@@ -151,10 +166,13 @@ const Rooms = ({ currentUser }) => {
                 </div>
             </div>
             <div className="conversations-collection">
-                {(contactedPeople && contactedPeople.length > 0) &&
-                    (rooms && rooms.length > 0) &&
+                {(contactedPeople && contactedPeople.length > 0 && contactedPeople.length === rooms.length) &&
                     rooms.map((room, r) => (
-                        <div className="room" key={r}>
+                        <div 
+                            className={(conversation && conversation.id === room.id) ? "room selected" : "room"} 
+                            key={r} 
+                            onClick={() => setConversation(room)}
+                        >
                             <span>
                                 {
                                     room.uids && getPerson(room.uids).displayName
