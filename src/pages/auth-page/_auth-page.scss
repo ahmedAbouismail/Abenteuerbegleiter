@@ -9,6 +9,7 @@
 .auth-page {
   @include cover;
   @include transition;
+  top: 70px;
 
   .cover {
     position: absolute;
