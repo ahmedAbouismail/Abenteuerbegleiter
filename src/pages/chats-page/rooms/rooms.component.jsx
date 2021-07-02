@@ -31,7 +31,7 @@ const Rooms = ({
     useEffect(() => {
         chatRooms
             .where("uids", "array-contains", currentUser.id)
-            // .orderBy("lastUpdate", "desc")
+            .orderBy("lastUpdate", "desc")
             .onSnapshot((querySnapshot) => {
                 let items = []
                 querySnapshot.forEach((doc) => {
@@ -51,12 +51,11 @@ const Rooms = ({
                     .then(snap => {
                         tempUser = snap.data()
 
-                        if (tempUser.id !== currentUser.id) {
+                        if (tempUser && tempUser.id !== currentUser.id) {
                             people.push(tempUser)
                         }
 
                         if (u === room.users.length - 1 && r === rooms.length - 1) {
-                            console.log("get contacts");
                             setContactedPeople(people) // set must be in the .then()
                         }
                     })
@@ -149,9 +148,6 @@ const Rooms = ({
         setConversation(room)
         setOpenRooms(false)
     }
-
-    console.log("contact: " + contactedPeople.length);
-    console.log("rooms: " + rooms.length);
 
     return (
         <div className={width <= 768 ? openRooms ? "rooms small" : "rooms small hidden" : "rooms"}>
