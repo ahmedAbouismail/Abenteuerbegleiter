@@ -4,4 +4,8 @@
     @include cover;
     top: 70px;
     display: flex;
+
+    &.small {
+        display: block;
+    }
 }

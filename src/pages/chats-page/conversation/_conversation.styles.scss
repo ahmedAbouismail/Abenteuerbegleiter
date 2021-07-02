@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import "../../root.styles";
 
 .conversation {
   width: 80%;
@@ -6,7 +7,31 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 20px;
+
+  &.small {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .open-rooms {
+    width: 100%;
+    z-index: 12;
+    background-color: #9575CD;
+    display: flex;
+    align-items: center;
+    color: white;
+    height: 60px;
+
+    .fas {
+      margin-left: 10px;
+    }
+
+    span {
+      margin-left: 10px;
+      font-size: 26px;
+    }
+  }
 
   .messages {
     display: flex;
@@ -14,6 +39,10 @@
     overflow-y: auto;
     padding: 20px;
     margin-bottom: 20px;
+
+    &.small {
+      min-height: calc(100vh - 240px);
+    }
 
     .message {
       display: flex;
@@ -46,9 +75,10 @@
           }
 
           .msg {
-              padding: 5px;
+              padding: 10px;
               border-radius: 10px;
               color: white;
+              font-size: 12px;
 
               &.right {
                 background-color: #e91e63;
@@ -80,6 +110,8 @@
   .type-msg {
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
+    height: 50px;
 
     input {
       background-color: transparent;
@@ -87,7 +119,7 @@
       border-bottom-width: 2px;
       border-color: #673ab7;
       outline: none;
-      width: 90%;
+      width: 85%;
       font-size: 18px;
       font-family: "Montserrat", sans-serif;
     }
@@ -99,6 +131,8 @@
       background-color: transparent;
       padding: 2px 5px;
       cursor: pointer;
+      width: 9%;
+      height: 40px;
     }
   }
 }

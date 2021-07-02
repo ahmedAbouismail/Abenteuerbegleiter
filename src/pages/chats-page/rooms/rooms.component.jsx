@@ -14,7 +14,14 @@ const users = projectFirestore.collection("users")
 const chatRooms = projectFirestore.collection("chatRooms")
 const chats = projectFirestore.collection("chats")
 
-const Rooms = ({ currentUser, setConversation, conversation }) => {
+const Rooms = ({
+    currentUser,
+    setConversation,
+    conversation,
+    openRooms,
+    setOpenRooms,
+    width
+}) => {
 
     const [foundAccounts, setFoundAccounts] = useState([])
     const [name, setName] = useState("")
@@ -49,6 +56,7 @@ const Rooms = ({ currentUser, setConversation, conversation }) => {
                         }
 
                         if (u === room.users.length - 1 && r === rooms.length - 1) {
+                            console.log("get contacts");
                             setContactedPeople(people) // set must be in the .then()
                         }
                     })
@@ -80,9 +88,11 @@ const Rooms = ({ currentUser, setConversation, conversation }) => {
         }
         if (rooms && rooms.length > 0) {
             let exist = false
+            let existingRoom = null
             for (let index = 0; index < rooms.length; index++) {
                 if (rooms[index].uids.includes(currentUser.id) && rooms[index].uids.includes(otherAccount.id)) {
                     exist = true
+                    existingRoom = rooms[index]
                     break
                 }
             }
@@ -104,6 +114,9 @@ const Rooms = ({ currentUser, setConversation, conversation }) => {
                         console.log(err);
                     })
                 setConversation(room)
+            } else {
+                setConversation(existingRoom)
+                setName("")
             }
         } else {
             console.log("room zero");
@@ -132,11 +145,22 @@ const Rooms = ({ currentUser, setConversation, conversation }) => {
         return person
     }
 
-    console.log(contactedPeople);
+    const selectChatRoom = (room) => {
+        setConversation(room)
+        setOpenRooms(false)
+    }
+
+    console.log("contact: " + contactedPeople.length);
+    console.log("rooms: " + rooms.length);
 
     return (
-        <div className="rooms">
-            <div className="search-div">
+        <div className={width <= 768 ? openRooms ? "rooms small" : "rooms small hidden" : "rooms"}>
+            {(width <= 768 && conversation) &&
+                <div className="close-rooms" onClick={() => setOpenRooms(false)}>
+                    <i className="fas fa-chevron-left fa-2x"></i>
+                    <span>Close</span>
+                </div>}
+            <div className={width <= 768 ? "search-div small" : "search-div"}>
                 <div className="search">
                     <input
                         placeholder="Search for username..."
@@ -165,17 +189,17 @@ const Rooms = ({ currentUser, setConversation, conversation }) => {
                     }
                 </div>
             </div>
-            <div className="conversations-collection">
-                {(contactedPeople && contactedPeople.length > 0 && contactedPeople.length === rooms.length) &&
+            <div className={width <= 768 ? "conversations-collection small" : "conversations-collection"}>
+                {(contactedPeople && contactedPeople.length > 0 && contactedPeople.length === rooms.length) ?
                     rooms.map((room, r) => (
-                        <div 
-                            className={(conversation && conversation.id === room.id) ? "room selected" : "room"} 
-                            key={r} 
-                            onClick={() => setConversation(room)}
+                        <div
+                            className={(conversation && conversation.id === room.id) ? "room selected" : "room"}
+                            key={r}
+                            onClick={() => selectChatRoom(room)}
                         >
                             <span>
                                 {
-                                    room.uids && getPerson(room.uids).displayName
+                                    room.uids && getPerson(room.uids).displayName.substr(0, 10)
                                 }
                             </span>
                             <div className="img-wrap">
@@ -184,7 +208,10 @@ const Rooms = ({ currentUser, setConversation, conversation }) => {
                                     <img src={DefaultAvatar} alt="default-avatar" />}
                             </div>
                         </div>
-                    ))}
+                    )) :
+                    <div>
+                        No chat rooms yet
+                    </div>}
             </div>
         </div>
     );

@@ -12,7 +12,12 @@ import "./_conversation.styles.scss"
 
 const chats = projectFirestore.collection("chats")
 
-const Conversation = ({ conversation, currentUser }) => {
+const Conversation = ({
+    currentUser,
+    conversation,
+    setOpenRooms,
+    width
+}) => {
 
     const [message, setMessage] = useState("")
     const [messages, setMessages] = useState([])
@@ -75,8 +80,13 @@ const Conversation = ({ conversation, currentUser }) => {
 
     return (
         conversation &&
-        <div className="conversation">
-            <div className="messages">
+        <div className={width <= 768 ? "conversation small" : "conversation"}>
+            {width <= 768 &&
+                <div className="open-rooms" onClick={() => setOpenRooms(true)}>
+                    <i className="fas fa-chevron-right fa-2x"></i>
+                    <span>{contactedPerson && contactedPerson.displayName}</span>
+                </div>}
+            <div className={width <= 768 ? "messages small" : "messages"}>
                 {messages && messages.length > 0 && contactedPerson &&
                     messages.map((msg, m) => (
                         <div key={m} className={msg.uid === currentUser.id ? "message right" : "message left"}>
@@ -85,11 +95,11 @@ const Conversation = ({ conversation, currentUser }) => {
                                 <span className={msg.uid === currentUser.id ? "msg right" : "msg left"}>{msg.message}</span>
                             </div>
                             <div className="img-wrap">
-                                {(msg.uid === currentUser.id) ? 
+                                {(msg.uid === currentUser.id) ?
                                     (currentUser.picUrl ? <img src={currentUser.picUrl} alt="profile-pic" /> :
-                                    <img src={DefaultAvatar} alt="default-avatar" />) :
-                                    (contactedPerson.picUrl ? <img src={contactedPerson.picUrl} alt="profile-pic" />:
-                                    <img src={DefaultAvatar} alt="default-avatar" />)}
+                                        <img src={DefaultAvatar} alt="default-avatar" />) :
+                                    (contactedPerson.picUrl ? <img src={contactedPerson.picUrl} alt="profile-pic" /> :
+                                        <img src={DefaultAvatar} alt="default-avatar" />)}
                             </div>
                         </div>
                     ))
@@ -106,7 +116,7 @@ const Conversation = ({ conversation, currentUser }) => {
                     className="send-btn"
                     onClick={() => sendMessage("click")}
                 >
-                    <i className="fas fa-paper-plane fa-2x"></i>
+                    <i className={width <= 420 ? "fas fa-paper-plane" : "fas fa-paper-plane fa-2x"}></i>
                 </button>
             </div>
         </div>
