@@ -76,8 +76,6 @@ const Conversation = ({
         }
     }
 
-    console.log(contactedPerson);
-
     return (
         conversation &&
         <div className={width <= 768 ? "conversation small" : "conversation"}>

@@ -62,8 +62,8 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
                     </div>
                 }
             </div>
-            {openDropdown &&
-                <div className="dropdown-menus">
+            {currentUser &&
+                <div className={openDropdown ? "dropdown-menus" : "dropdown-menus hidden"}>
                     <div className="dropdown-menu" onClick={toProfile}>
                         <i className="fas fa-user-circle"></i>
                         <span>Profile</span>

@@ -71,18 +71,10 @@
     position: absolute;
     top: 70px;
     right: 20px;
-    animation-name: dropdown;
-    animation-iteration-count: 1;
-    animation-duration: 1s;
-    z-index: 2;
+    transition: transform 0.5s;
 
-    @keyframes dropdown {
-      0% {
-        top: -100px;
-      }
-      100% {
-        top: 70px;
-      }
+    &.hidden {
+      transform: translateY(-100%);
     }
 
     .dropdown-menu {
