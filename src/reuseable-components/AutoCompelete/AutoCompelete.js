@@ -45,11 +45,6 @@ class Autocomplete extends Component {
       <>
       <div>
 
-      
-        {mapApiLoaded && (
-          <AutoComplete map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />
-        )}
-
         <GoogleMap
           defaultZoom={10}
           defaultCenter={LOS_ANGELES_CENTER}
@@ -70,6 +65,10 @@ class Autocomplete extends Component {
               />
             ))}
         </GoogleMap>
+
+        {mapApiLoaded && (
+          <AutoComplete map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />
+        )}
 
       </div>
       </>
