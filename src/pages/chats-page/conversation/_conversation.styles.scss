@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+.conversation {
+  width: 80%;
+  background-color: azure;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+
+  .messages {
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: auto;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    .message {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+
+      &.right {
+        justify-content: flex-end;
+      }
+
+      &.left {
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+      }
+
+      .span-msg-name {
+          display: flex;
+          flex-direction: column;
+
+          &.right {
+            align-items: flex-end;
+          }
+    
+          &.left {
+            align-items: flex-start;
+          }
+        
+          .name {
+              font-size: 8px;
+          }
+
+          .msg {
+              padding: 5px;
+              border-radius: 10px;
+              color: white;
+
+              &.right {
+                background-color: #e91e63;
+              }
+
+              &.left {
+                background-color: #673ab7;
+              }
+          }
+      }
+
+      .img-wrap {
+        position: relative;
+        height: 40px;
+        width: 40px;
+        overflow: hidden;
+        border-radius: 50%;
+        border: outset 1px #e91e63;
+        margin: 10px;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .type-msg {
+    display: flex;
+    justify-content: space-evenly;
+
+    input {
+      background-color: transparent;
+      border-width: 0;
+      border-bottom-width: 2px;
+      border-color: #673ab7;
+      outline: none;
+      width: 90%;
+      font-size: 18px;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .send-btn {
+      color: #ec407a;
+      border: outset 2px #ab47bc;
+      border-radius: 5px;
+      background-color: transparent;
+      padding: 2px 5px;
+      cursor: pointer;
+    }
+  }
+}

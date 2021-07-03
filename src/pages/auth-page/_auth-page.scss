@@ -8,6 +8,8 @@
 
 .auth-page {
   @include cover;
+  @include transition;
+  top: 70px;
 
   .cover {
     position: absolute;
@@ -110,27 +112,51 @@
       margin: 20px 0 0;
     }
 
-    Button {
-        transform: translateX(-50%);
-        margin-left: 50%;
-    }
-
     .alternative {
       cursor: pointer;
       text-decoration: underline;
       margin-top: 5px;
     }
+
+    .btn-div {
+      display: flex;
+      justify-content: space-evenly;
+    }
   }
 
   @media (max-width: 1300px) {
-
     .cover {
-        width: 750px;
-        height: 600px;
+      width: 750px;
+      height: 600px;
     }
 
     .auth-box {
-        padding: 0 100px;
+      padding: 0 100px;
+    }
+  }
+
+  @media (max-width: 1100px) {
+
+    .auth-box {
+      padding: 0 50px;
+      width: 400px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .cover {
+      z-index: 3;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .auth-box {
+      width: 90%;
+      padding: 0 20px;
+    }
+
+    .message {
+      padding: 10px;
     }
   }
 }

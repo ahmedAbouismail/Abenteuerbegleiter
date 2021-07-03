@@ -3,8 +3,8 @@ import { render } from "@testing-library/react"
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { isEmpty, useFirestore } from "react-redux-firebase";
-import { connect, useSelector } from "react-redux";
+import { isEmpty } from "react-redux-firebase";
+import { connect } from "react-redux";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,10 +21,10 @@ import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import CardMedia from '@material-ui/core/CardMedia';
 const initialState = {
-    postTitle: "",
-    postText: "",
-  };
-const initialPlaceState={
+  postTitle: "",
+  postText: "",
+};
+const initialPlaceState = {
   name: "",
   formatted_address: ""
 }
@@ -82,19 +82,20 @@ const CreatePost= ({currentUser, id})=>{
             console.log(data);
         }
     }
+  }
 
-    function handleChange({ target: { type, name, value, checked } }){
-        switch (type) {
-            case "number":
-              setstate({ ...state, [name]: parseInt(value) });
-              break;
-            case "checkbox":
-              setstate({ ...state, [name]: checked });
-              break;
-            default:
-              setstate({ ...state, [name]: value });
-          }      
+  function handleChange({ target: { type, name, value, checked } }) {
+    switch (type) {
+      case "number":
+        setstate({ ...state, [name]: parseInt(value) });
+        break;
+      case "checkbox":
+        setstate({ ...state, [name]: checked });
+        break;
+      default:
+        setstate({ ...state, [name]: value });
     }
+  }
 
     function getPostByPostId(){
       var post = projectFirestore.collection("posts").doc(currentUser.id)
@@ -263,6 +264,6 @@ const CreatePost= ({currentUser, id})=>{
 }
 
 const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser
-  })
+  currentUser: selectCurrentUser
+})
 export default connect(mapStateToProps)(CreatePost);

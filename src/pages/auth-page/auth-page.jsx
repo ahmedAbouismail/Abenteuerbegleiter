@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
-import FormAuth from "../../reuseable-components/form-auth/form-auth.components"
+import FormInput from "../../reuseable-components/form-input/form-input.component"
 import Button from '../../reuseable-components/button/button.component'
 
-import { createUserDatabase, projectAuth } from "../../firebase/config"
+import { createUserDatabase, projectAuth, signInWithGoogle } from "../../firebase/config"
 
 import { ReactComponent as Cover } from "../../assets/auth-cover.svg"
 import "./_auth-page.scss";
@@ -133,7 +133,7 @@ const AuthPage = () => {
             <div className="ground" />
             <form className={isRegistered ? "auth-box" : "auth-box none"} onSubmit={login} >
                 <h1>Login</h1>
-                <FormAuth
+                <FormInput
                     name="email"
                     type="email"
                     value={loginInput.email}
@@ -141,7 +141,7 @@ const AuthPage = () => {
                     label="Email"
                     backcolor="transparent"
                 />
-                <FormAuth
+                <FormInput
                     name="password"
                     type="password"
                     value={loginInput.password}
@@ -149,12 +149,23 @@ const AuthPage = () => {
                     label="Password"
                     backcolor="transparent"
                 />
-                <Button
-                    type="submit"
-                    backcolor="#521262"
-                    color="#ffffff"
-                    desc="Login"
-                />
+                <div className="btn-div">
+                    <Button
+                        type="submit"
+                        backcolor="#521262"
+                        color="#ffffff"
+                        desc="Login"
+                        fontSize="18px"
+                    />
+                    <Button
+                        type="button"
+                        backcolor="#3490DE"
+                        color="#ffffff"
+                        desc="Sign in with Google"
+                        fontSize="15px"
+                        onClick={() => signInWithGoogle()}
+                    />
+                </div>
                 <p>
                     Don't have an account yet?
                 </p>
@@ -164,7 +175,7 @@ const AuthPage = () => {
             </form>
             <form className={isRegistered ? "auth-box none" : "auth-box"} onSubmit={register}>
                 <h1>Register</h1>
-                <FormAuth
+                <FormInput
                     name="displayName"
                     type="text"
                     value={regInput.displayName}
@@ -172,7 +183,7 @@ const AuthPage = () => {
                     label="Display Name"
                     backcolor="transparent"
                 />
-                <FormAuth
+                <FormInput
                     name="emailReg"
                     type="email"
                     value={regInput.emailReg}
@@ -180,7 +191,7 @@ const AuthPage = () => {
                     label="Email"
                     backcolor="transparent"
                 />
-                <FormAuth
+                <FormInput
                     name="passwordReg"
                     type="password"
                     value={regInput.passwordReg}
@@ -188,7 +199,7 @@ const AuthPage = () => {
                     label="Password"
                     backcolor="transparent"
                 />
-                <FormAuth
+                <FormInput
                     name="confirmPasswordReg"
                     type="password"
                     value={regInput.confirmPasswordReg}

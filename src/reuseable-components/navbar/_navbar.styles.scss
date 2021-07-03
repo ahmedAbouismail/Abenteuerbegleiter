@@ -1,35 +1,104 @@
 .navbar {
-    width: 100vw;
-    height: 70px;
-    margin-bottom: 25px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #6639a6;
+  width: 100vw;
+  height: 70px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #6639a6;
+  display: flex;
+  justify-content: space-between;
+  z-index: 20;
+
+  .logo-wrap {
+    .logo {
+      width: 90px;
+      height: 70px;
+      color: white;
+    }
+  }
+
+  .menus {
     display: flex;
-    justify-content: space-between;
-    z-index: 99999;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-right: 20px;
+    z-index: 25;
+    background-color: #6639a6;
 
-    .logo-wrap {
- 
-        .logo {
-            width: 90px;
-            height: 70px;
-            color: white;
-        }
+    .menu {
+      text-decoration: none;
+      color: white;
+      cursor: pointer;
+      margin: 0 50px;
     }
 
-    .menus {
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-        padding-right: 10px;
+    .header-dropdown {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      width: 70px;
+      cursor: pointer;
 
-        .menu {
-            text-decoration: none;
-            color: white;
-            cursor: pointer;
-            margin: 0 20px;
+      .img-wrap {
+        position: relative;
+        height: 40px;
+        width: 40px;
+        overflow: hidden;
+        border-radius: 50%;
+        border: outset 2px #e91e63;
+
+        img {
+          width: 100%;
+          height: 100%;
         }
+      }
+
+      .fa-caret-down {
+        color: white;
+        font-size: 1.2rem;
+        transition: transform 0.5s;
+
+        &.rotate {
+          transform: rotate(180deg);
+        }
+      }
     }
+  }
+
+  .dropdown-menus {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    animation-name: dropdown;
+    animation-iteration-count: 1;
+    animation-duration: 1s;
+    z-index: 2;
+
+    @keyframes dropdown {
+      0% {
+        top: -100px;
+      }
+      100% {
+        top: 70px;
+      }
+    }
+
+    .dropdown-menu {
+      background-color: #e91e63;
+      border-radius: 5px;
+      color: white;
+      padding: 20px;
+      cursor: pointer;
+      text-decoration: none;
+      width: 150px;
+      display: flex;
+      justify-content: space-between;
+
+      &:hover {
+        background-color: #880e4f;
+      }
+    }
+  }
 }

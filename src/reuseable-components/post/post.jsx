@@ -18,7 +18,6 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import { projectFirestore } from "../../firebase/config"
 import "firebase/firestore"
-import firebase from "firebase/app"
 import { connect } from 'react-redux';
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
