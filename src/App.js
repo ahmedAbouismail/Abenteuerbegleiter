@@ -56,7 +56,7 @@ function App({ currentUser, setCurrentUser }) {
           <Route path="/:somePath" component={PageNotFound} />}
 
         {currentUser ?
-          <Route exact path="/creatPost" component={PostPage}/> :
+          <Route exact path="/creatPost/:id?" render={(id) => <PostPage id={id} /> }/> :
           <Route path="/:somePath" component={PageNotFound} />
         }
 

@@ -10,17 +10,15 @@ const pin= {
     lng: null,
 }
 
-const PostPage = ()=>{
+const PostPage = ({id})=>{
 
 
     return(
         
       
-            <div 
-            // className="exm"
-            >
-                {/* <Autocomplete/> */}
-                <CreatePost/>
+            <div>
+                {console.log("props", id.match.params.id)}
+                <CreatePost id = {id}/>
             </div>
            
     );
