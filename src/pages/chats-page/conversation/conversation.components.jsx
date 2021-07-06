@@ -106,6 +106,7 @@ const Conversation = ({
             <div className="type-msg">
                 <input
                     type="text"
+                    placeholder="Write a message..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyDown={(e) => sendMessage(e)}
