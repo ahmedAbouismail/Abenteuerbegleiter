@@ -207,12 +207,14 @@ const AuthPage = () => {
                     label="Cofirm password"
                     backcolor="transparent"
                 />
-                <Button
-                    type="submit"
-                    backcolor="#521262"
-                    color="#ffffff"
-                    desc="Register"
-                />
+                <div className="btn-div">
+                    <Button
+                        type="submit"
+                        backcolor="#521262"
+                        color="#ffffff"
+                        desc="Register"
+                    />
+                </div>
                 <p>
                     I already have an account.
                 </p>

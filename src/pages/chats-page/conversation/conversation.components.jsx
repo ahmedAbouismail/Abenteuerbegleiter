@@ -81,7 +81,7 @@ const Conversation = ({
         <div className={width <= 768 ? "conversation small" : "conversation"}>
             {width <= 768 &&
                 <div className="open-rooms" onClick={() => setOpenRooms(true)}>
-                    <i className="fas fa-chevron-right fa-2x"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <span>{contactedPerson && contactedPerson.displayName}</span>
                 </div>}
             <div className={width <= 768 ? "messages small" : "messages"}>

@@ -8,7 +8,7 @@ import { setCurrentUser } from '../../redux/user/user.actions';
 
 import { projectAuth } from "../../firebase/config";
 
-import { ReactComponent as Logo } from "../../assets/logo.svg";
+import Logo from "../../assets/logo.png"
 import DefaultAvatar from "../../assets/default-avatar.svg"
 import "./_navbar.styles.scss";
 
@@ -44,7 +44,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
     return (
         <div className="navbar">
             <Link className="logo-wrap" to="/" onClick={() => setOpenDropdown(false)}>
-                <Logo className="logo" />
+                <img src={Logo} className="logo" alt="logo" />
             </Link>
             <div className="menus">
                 <Link className="menu" to="/about">About</Link>

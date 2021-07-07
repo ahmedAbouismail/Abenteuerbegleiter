@@ -153,7 +153,7 @@ const Rooms = ({
         <div className={width <= 768 ? openRooms ? "rooms small" : "rooms small hidden" : "rooms"}>
             {(width <= 768 && conversation) &&
                 <div className="close-rooms" onClick={() => setOpenRooms(false)}>
-                    <i className="fas fa-chevron-left fa-2x"></i>
+                    <i className="fas fa-chevron-left"></i>
                     <span>Close</span>
                 </div>}
             <div className={width <= 768 ? "search-div small" : "search-div"}>

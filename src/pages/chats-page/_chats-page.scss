@@ -2,7 +2,6 @@
 
 .chats-page {
     @include cover;
-    top: 70px;
     display: flex;
 
     &.small {
