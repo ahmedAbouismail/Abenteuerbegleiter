@@ -3,17 +3,21 @@ import './_creatPost-page.scss'
 
 import CreatePost from '../../reuseable-components/postForm/postForm'
 
-const PostPage = ()=>{
+
+const pin= {
+    lat: null,
+    lng: null,
+}
+
+const PostPage = ({id})=>{
 
 
     return(
         
       
-            <div 
-            className="exm"
-            >
-                {/* <Autocomplete/> */}
-                <CreatePost/>
+            <div>
+                {console.log("props", id.match.params.id)}
+                <CreatePost id = {id}/>
             </div>
            
     );

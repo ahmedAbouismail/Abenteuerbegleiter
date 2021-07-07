@@ -62,6 +62,15 @@ function App({ currentUser, setCurrentUser }) {
           </Switch> :
           <Route path="/:somePath" component={PageNotFound} />}
 
+        {currentUser ?
+          <Route exact path="/creatPost/:id?" render={(id) => <PostPage id={id} /> }/> :
+          <Route path="/:somePath" component={PageNotFound} />
+        }
+
+        {currentUser ?
+          <Route exact path="/posts" component={postsPage}/> :
+          <Route path="/:somePath" component={PageNotFound} />
+        }
       </Switch>
     </div>
   )
