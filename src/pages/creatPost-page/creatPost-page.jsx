@@ -3,7 +3,7 @@ import './_creatPost-page.scss'
 
 import CreatePost from '../../reuseable-components/postForm/postForm'
 
-
+// eslint-disable-next-line
 const pin= {
     lat: null,
     lng: null,

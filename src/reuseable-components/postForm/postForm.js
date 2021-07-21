@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+// eslint-disable-next-line
 import { render } from "@testing-library/react"
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
@@ -14,7 +15,9 @@ import Post from "../../entity/post"
 import "firebase/firestore"
 import firebase from "firebase/app"
 import "../../pages/auth-page/_auth-page.scss"
+// eslint-disable-next-line
 import postsPage from '../../pages/posts-page/postsPage';
+// eslint-disable-next-line
 import { stat } from '@nodelib/fs.stat';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
@@ -28,7 +31,7 @@ const initialPlaceState = {
   name: "",
   formatted_address: ""
 }
-
+// eslint-disable-next-line
 const postState = {
   ownerId: null,
   postId: null,
@@ -98,6 +101,7 @@ const CreatePost = ({ currentUser, id }) => {
   }
 
   function getPostByPostId() {
+    // eslint-disable-next-line
     var post = projectFirestore.collection("posts").doc(currentUser.id)
       .collection("postsData")
       .doc(id.match.params.id).get().then((res) => {
@@ -112,12 +116,14 @@ const CreatePost = ({ currentUser, id }) => {
     if (!isEmpty(id.match.params.id)) {
       getPostByPostId();
     }
+    // eslint-disable-next-line
   }, [])
 
 
   function writeUserInDB() {
 
     const timestamp = firebase.firestore.Timestamp.fromDate(new Date()).toDate();
+    // eslint-disable-next-line
     const result = projectFirestore.collection("posts")
       .doc(currentUser.id)
       .collection("postsData")
@@ -214,6 +220,7 @@ const CreatePost = ({ currentUser, id }) => {
           label="Title"
           variant="outlined"
           value={state["postTitle"]}
+          // eslint-disable-next-line
           error={state["postTitle"] == ""}
           onChange={handleChange}
         />
@@ -226,6 +233,7 @@ const CreatePost = ({ currentUser, id }) => {
           label="Text"
           variant="outlined"
           value={state["postText"]}
+          // eslint-disable-next-line
           error={state["postText"] == ""}
           onChange={handleChange}
         />

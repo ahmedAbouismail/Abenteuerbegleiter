@@ -21,12 +21,16 @@ import "firebase/firestore"
 import { connect } from 'react-redux';
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
+// eslint-disable-next-line
 import {firestoreConnect, isEmpty} from 'react-redux-firebase'
+// eslint-disable-next-line
 import {compose} from 'redux'
 import Menu from '@material-ui/core/Menu';
 import Fade from '@material-ui/core/Fade';
 import MenuItem from '@material-ui/core/MenuItem';
+// eslint-disable-next-line
 import { Redirect, Route, useHistory  } from "react-router-dom";
+// eslint-disable-next-line
 import PostPage from "../../pages/creatPost-page/creatPost-page"
 // import {ReadAllPostsFromDB} from './Db'
 const useStyles = makeStyles((theme) => ({
@@ -93,7 +97,7 @@ const Post = ({currentUser}) => {
      posts.get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             const ownerId = doc.data().userId
-            const title = doc.data(). title
+            const title = doc.data().title
             const context = doc.data().context
             const location = doc.data().location
             
@@ -109,7 +113,8 @@ const Post = ({currentUser}) => {
   }
 
   useEffect(()=>{
-      readAllPostsFromDB();     
+      readAllPostsFromDB();   
+      // eslint-disable-next-line  
   }, [])
  
 
@@ -130,6 +135,7 @@ const Post = ({currentUser}) => {
    
     switch (event.currentTarget.innerText) {
         case "Edit":
+          // eslint-disable-next-line
             var post = projectFirestore.collection("posts").doc(currentUser.id)
             .collection("postsData")
             .doc(selectedP).get().then((res)=>{
@@ -149,7 +155,7 @@ const Post = ({currentUser}) => {
       <>
 
     
-    {
+    {// eslint-disable-next-line
     !isEmpty(postData), console.log("empty") &&
     console.log("is nit empty"),
         postData.map((post)=>(

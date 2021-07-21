@@ -11,6 +11,7 @@ import DefaultAvatar from "../../../assets/default-avatar.svg"
 import "./_conversation.styles.scss"
 
 const chats = projectFirestore.collection("chats")
+const chatRooms = projectFirestore.collection("chatRooms")
 
 const Conversation = ({
     currentUser,
@@ -70,6 +71,12 @@ const Conversation = ({
                 .then(() => {
                     setMessage("")
                 })
+                .catch(err => {
+                    console.log(err);
+                })
+            chatRooms
+                .doc(conversation.id)
+                .update({lastUpdate: msg.createdAt})
                 .catch(err => {
                     console.log(err);
                 })
