@@ -41,7 +41,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
         history.push("/chats")
     }
 
-    const toCreatePost =()=>{
+    const toCreatePost = () => {
         setOpenDropdown(false)
         history.push("/createPost")
     }
@@ -67,25 +67,24 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
                     </div>
                 }
             </div>
-            {openDropdown &&
-                <div className="dropdown-menus">
-                    <div className="dropdown-menu" onClick={toCreatePost}>
-                        <i class="fas fa-plus"></i>
-                        <span>Create Post</span>
-                    </div>
-                    <div className="dropdown-menu" onClick={toProfile}>
-                        <i className="fas fa-user-circle"></i>
-                        <span>Profile</span>
-                    </div>
-                    <div className="dropdown-menu" onClick={toMessages}>
-                        <i className="far fa-comments"></i>
-                        <span>Chats</span>
-                    </div>
-                    <div className="dropdown-menu" onClick={signOut}>
-                        <i className="fas fa-door-open"></i>
-                        <span>Logout</span>
-                    </div>
-                </div>}
+            <div className={`dropdown-menus ${!openDropdown && "hidden"}`}>
+                <div className="dropdown-menu" onClick={toCreatePost}>
+                    <i class="fas fa-plus"></i>
+                    <span>Create Post</span>
+                </div>
+                <div className="dropdown-menu" onClick={toProfile}>
+                    <i className="fas fa-user-circle"></i>
+                    <span>Profile</span>
+                </div>
+                <div className="dropdown-menu" onClick={toMessages}>
+                    <i className="far fa-comments"></i>
+                    <span>Chats</span>
+                </div>
+                <div className="dropdown-menu" onClick={signOut}>
+                    <i className="fas fa-door-open"></i>
+                    <span>Logout</span>
+                </div>
+            </div>
         </div>
     );
 };
