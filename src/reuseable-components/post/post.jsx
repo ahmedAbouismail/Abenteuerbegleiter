@@ -15,9 +15,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Container from "@material-ui/core/Container";
 
-import { projectFirestore } from "../../firebase/config"
+import { projectFirestore, projectStorage } from "../../firebase/config"
 import "firebase/firestore"
+import firebase from "firebase/app"
 import { connect } from 'react-redux';
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
@@ -28,6 +30,9 @@ import Fade from '@material-ui/core/Fade';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Redirect, Route, useHistory  } from "react-router-dom";
 import PostPage from "../../pages/creatPost-page/creatPost-page"
+import { Remove, Sync } from '@material-ui/icons';
+import Grid from '@material-ui/core/Grid';
+
 // import {ReadAllPostsFromDB} from './Db'
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,18 +70,27 @@ const postState = [{
     postId: null,
     title: null,
     context: null,
-    location: null,
+    loaction: null,
+    imageUrl: null,
+    like: null,
+    likesCount: null,
+    createdTimestamp: null,
 }]
 
 const ITEM_HEIGHT = 48;
+
+var ev = null;
 const Post = ({currentUser}) => {
     let history = useHistory();
 
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [postData, setPostData] = React.useState(postState);
+  const [like, setLike] = React.useState(false);
+  const [docu, setDocu] = React.useState();
   const newState = []
-
+  const [avatar, setAvatar] = React.useState();
+  const [likeEvent, setLikeEvent] = React.useState();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -86,7 +100,7 @@ const Post = ({currentUser}) => {
   };
 
   const redirect = (id) => {
-    history.push(`/creatPost/${id}`)
+    history.push(`/createPost/${id}`)
   }
   const readAllPostsFromDB = () =>{
      var posts = projectFirestore.collectionGroup("postsData");
@@ -95,9 +109,24 @@ const Post = ({currentUser}) => {
             const ownerId = doc.data().userId
             const title = doc.data(). title
             const context = doc.data().context
-            const location = doc.data().location
-            
-            newState.push({"ownerId": ownerId ,"postId": doc.id, 'title': title, 'context': context, 'location': location})
+            const loaction = doc.data().loaction
+            const imageUrl = doc.data().imageUrl
+            const likes = doc.data().likes
+            const createdTimestamp = doc.data().createdTimestamp
+   
+            const count = likes == null ? 0 : likes.length;
+            // const count = likes.length > 0? likes.length : null; 
+            console.log("POst url", imageUrl);
+            var likeStatus = false;
+            if(!isEmpty(likes)){
+              likes.forEach((like)=>{
+                if(like.id === currentUser.id){
+                  likeStatus = true;
+                  console.log("found like", like.id);
+                }
+              })
+            }
+            newState.push({"ownerId": ownerId ,"postId": doc.id, 'title': title, 'context': context, 'loaction': loaction, "imageUrl" : imageUrl, "like":likeStatus, "likesCount": count, "createdTimestamp": createdTimestamp.toDate().toString()})
             console.log(doc.id, ' => ', doc.data().title);
         });
     })
@@ -121,16 +150,78 @@ const Post = ({currentUser}) => {
     setSelectedPostId(event.currentTarget.id);
   };
 
+  function checkLikeStatus(event){
+    const x = event;
+    var d = null;
+    var c = null;
+    const post = projectFirestore.collectionGroup("postsData")
+    .where("postId", "==", event.currentTarget.id).get()
+    .then((res)=>{
+      res.forEach((doc)=>{
+        if(isEmpty(doc.data().likes)){
+          d = doc;
+          c  = false;
+        }else{
+          doc.data().likes.forEach((like)=>{
+            if(like.id === currentUser.id){
+              c = true;
+              d = doc;
+              console.log("The User liked this", d);
+            }else{
+              c = false;
+              d = doc;
+              console.log("The User liked this", d);
+            }
+          })
+        }
+        }
+      )
+      if(!c){
+        console.log("put", d);
+        putLike(d);
+        
+      }else{
+        console.log("remove", d);
+        removeLike(d)
+        
+      }
+    })
+    
+  }
+
+  function putLike(d){
+    console.log("Put Like Function");
+    const like = d.ref.update({likes: firebase.firestore.FieldValue.arrayUnion({
+      id: currentUser.id,
+      status: true
+    })}).then(()=>{
+      readAllPostsFromDB()
+    })
+    console.log("Add Like", d);
+  }
+
+  function removeLike(d){
+    console.log("Remove Function");
+    const like = d.ref.update({likes: firebase.firestore.FieldValue.arrayRemove({
+            id: currentUser.id,
+            status: true
+          })}).then(()=>{
+            readAllPostsFromDB();
+          })
+   
+    console.log("Removed Like", d);
+  }
+  function handleLike(event){
+    checkLikeStatus(event);
+    }
 
   const handleClose = (event) => {
     setAnchorEl(null);
     console.log("Presses", event.currentTarget.innerText);
    
-    
-   
     switch (event.currentTarget.innerText) {
         case "Edit":
-            var post = projectFirestore.collection("posts").doc(currentUser.id)
+            const editRes = projectFirestore.collection("posts").doc(currentUser.id)
             .collection("postsData")
             .doc(selectedP).get().then((res)=>{
                 console.log(res.data())
@@ -138,12 +229,48 @@ const Post = ({currentUser}) => {
             });
             break;
         case "Delete":
-        
+            const deleteRes = projectFirestore.collection("posts")
+            .doc(currentUser.id).collection("postsData").doc(selectedP)
+            .delete().then(() => {
+                readAllPostsFromDB();
+                console.log("Document successfully deleted!");
+            }).catch((error) => {
+                console.error("Error removing document: ", error);
+            });
+
+            const desertRef = projectStorage.ref(`posts/${currentUser.id} +"&"+ ${selectedP}`);
+            
+                console.log("IMage found", desertRef);
+                desertRef.delete().then(() => {
+                    // File deleted successfully
+                  }).catch((error) => {
+                    // Uh-oh, an error occurred!
+                    console.log("Error while deleting the image", error);
+                  });
+            
+           
             break;
         default:
             break;
     }
   };
+
+  function getUserAvatar(ownerId){
+      if (!isEmpty(ownerId)) {
+        const img = projectFirestore.collection("users").doc(ownerId).get()
+      .then((res)=>{
+        console.log("Ima",res.data().picUrl);
+        
+        if(res.exists){
+     
+        }else{
+          console.log("Rong");
+          return "Something Rong"
+        }
+      })
+      }
+    
+  }
 
   return (
       <>
@@ -153,18 +280,34 @@ const Post = ({currentUser}) => {
     !isEmpty(postData), console.log("empty") &&
     console.log("is nit empty"),
         postData.map((post)=>(
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justify="center"
+            spacing={3}
+        >
+          <Container
+          // maxWidth="sm" 
+          style={{  width:"50vw", hight:"100%"}}
+          >
+
+         
             <Card className={classes.root}>
             <CardHeader
               avatar={
-                <Avatar aria-label="recipe" className={classes.avatar}>
-                  R
-                </Avatar>
+                <Avatar
+                 aria-label="recipe"
+                 src={getUserAvatar(post.ownerId)}
+                 className={classes.avatar}
+                 />
               }
               action=
                 
                     {post.ownerId === currentUser.id &&
                     <div>
-                        <IconButton 
+                        <IconButton
+                         
                         id={post.postId}
                         aria-label="settings"
                         aria-controls="long-menu"
@@ -206,65 +349,34 @@ const Post = ({currentUser}) => {
                 }
                     
               title={post.title}
-              subheader="September 14, 2016"
+              subheader={post.createdTimestamp}
             />
             <CardMedia
               className={classes.media}
-              image="/static/images/cards/paella.jpg"
+              image={post.imageUrl}
               title="Paella dish"
             />
             <CardContent>
               <Typography variant="body2" color="textSecondary" component="p">
-                This impressive paella is a perfect party dish and a fun meal to cook together with your
-                guests. Add 1 cup of frozen peas along with the mussels, if you like. {post.postId}
+               {post.context}
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
+              <IconButton
+               id={post.postId}
+               aria-label="Like"
+               onClick={handleLike}
+              >
+                {(post.like == true)?   <FavoriteIcon style={{ color: red[500] }}/> :  <FavoriteIcon/>} 
+                <p style={{fontSize: 15, color: 'black'}}> {" " + post.likesCount}</p>
               </IconButton>
               <IconButton aria-label="share">
                 <ShareIcon />
               </IconButton>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expanded,
-                })}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
             </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <CardContent>
-                <Typography paragraph>Method:</Typography>
-                <Typography paragraph>
-                  Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-                  minutes.
-                </Typography>
-                <Typography paragraph>
-                  Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-                  heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-                  browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
-                  and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
-                  pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
-                  saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-                </Typography>
-                <Typography paragraph>
-                  Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook
-                  without stirring, until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to
-                  medium-low, add reserved shrimp and mussels, tucking them down into the rice, and cook
-                  again without stirring, until mussels have opened and rice is just tender, 5 to 7
-                  minutes more. (Discard any mussels that don’t open.)
-                </Typography>
-                <Typography>
-                  Set aside off of the heat to let rest for 10 minutes, and then serve.
-                </Typography>
-              </CardContent>
-            </Collapse>
           </Card>
+          </Container>
+        </Grid>
         ))
     }
    

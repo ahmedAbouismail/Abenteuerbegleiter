@@ -24,6 +24,7 @@ class Autocomplete extends Component {
   }
 
   apiHasLoaded = (map, maps) => {
+    this.props.getLoaded(true, map,maps)
     this.setState({
       mapApiLoaded: true,
       mapInstance: map,
@@ -32,9 +33,7 @@ class Autocomplete extends Component {
   };
 
   addPlace = (place) => {
-    this.props.getLocation(place)
     this.setState({ places: [place] });
-    console.log(place);
   };
 
   render() {
@@ -55,20 +54,22 @@ class Autocomplete extends Component {
           yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
         >
-          {!isEmpty(places)
-            && places.map((place) => (
+          {!isEmpty(this.props.location)
+            && 
+           
               <Marker
-                key={place.id}
-                text={place.name}
-                lat={place.geometry.location.lat()}
-                lng={place.geometry.location.lng()}
+                key={this.props.location.id}
+                text={this.props.location.name}
+                lat={this.props.location.lat}
+                lng={this.props.location.lng}
               />
-            ))}
+            
+            }
         </GoogleMap>
 
-        {mapApiLoaded && (
+        {/* {mapApiLoaded && (
           <AutoComplete map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />
-        )}
+        )} */}
 
       </div>
       </>

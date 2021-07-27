@@ -1,12 +1,12 @@
 class Post{
-    constructor(userId, postId,createdTimestamp, location, title, context, imageUrl, like){
+    constructor(userId, postId,createdTimestamp, location, title, context, imageUrl, likes){
         this.userId = userId;
         this.postId = postId;
-        this.loaction = location;
+        this.location = location;
         this.title = title;
         this.context = context;
         this.imageUrl = imageUrl;
-        this.like = like;
+        this.likes = likes;
         this.createdTimestamp = createdTimestamp;
     }
 }
