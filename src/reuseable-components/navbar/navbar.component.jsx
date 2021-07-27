@@ -41,6 +41,11 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
         history.push("/chats")
     }
 
+    const toCreatePost =()=>{
+        setOpenDropdown(false)
+        history.push("/createPost")
+    }
+
     return (
         <div className="navbar">
             <Link className="logo-wrap" to="/" onClick={() => setOpenDropdown(false)}>
@@ -62,8 +67,12 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
                     </div>
                 }
             </div>
-            {currentUser &&
-                <div className={openDropdown ? "dropdown-menus" : "dropdown-menus hidden"}>
+            {openDropdown &&
+                <div className="dropdown-menus">
+                    <div className="dropdown-menu" onClick={toCreatePost}>
+                        <i class="fas fa-plus"></i>
+                        <span>Create Post</span>
+                    </div>
                     <div className="dropdown-menu" onClick={toProfile}>
                         <i className="fas fa-user-circle"></i>
                         <span>Profile</span>

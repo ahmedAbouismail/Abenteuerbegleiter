@@ -1,24 +1,33 @@
 import React from 'react'
 import './_creatPost-page.scss'
-
+import Grid from '@material-ui/core/Grid';
 import CreatePost from '../../reuseable-components/postForm/postForm'
-
-// eslint-disable-next-line
-const pin= {
-    lat: null,
-    lng: null,
-}
+import { Typography } from '@material-ui/core';
+import { blue } from '@material-ui/core/colors';
 
 const PostPage = ({id})=>{
 
 
     return(
-        
       
-            <div>
-                {console.log("props", id.match.params.id)}
-                <CreatePost id = {id}/>
-            </div>
+            <Grid
+            container
+            justify="center"
+            alignItems="flex-start"
+            direction="column"
+            style={{minHeight: "100vh", marginLeft: "1%"}}
+            spacing={2}
+            >
+                
+                <Grid 
+                item
+                >
+                    <CreatePost id = {id}/>
+                </Grid>
+                
+            </Grid>
+                
+
            
     );
 }

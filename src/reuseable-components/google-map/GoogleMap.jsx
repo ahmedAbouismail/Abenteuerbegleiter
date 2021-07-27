@@ -4,14 +4,15 @@ import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 
 const Wrapper = styled.main`
-  width: 100%;
-  height: 100%;
+  width: 20%;
+  height: 20%;
+  
 `;
 
 const GoogleMap = ({ children, ...props }) => (
-  <Wrapper>
+  // <Wrapper>
     <GoogleMapReact 
-      style={{ height: '100vh', width: '100%' }}
+      style={{ height: '100%', width: '100%', zIndex:"-1"}}
       bootstrapURLKeys={{
         key:process.env.REACT_APP_MAP_KEYs,
       }}
@@ -19,7 +20,7 @@ const GoogleMap = ({ children, ...props }) => (
     >
       {children}
     </GoogleMapReact>
-  </Wrapper>
+  // </Wrapper>
 );
 
 GoogleMap.propTypes = {
