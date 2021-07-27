@@ -262,29 +262,14 @@ const CreatePost = ({ currentUser, id }) => {
           beforeWriteInDB();
         }
       }
-    })
-      .then(() => {
-        console.log("Document successfully updated!");
-      })
-      .catch((error) => {
-        // The document probably doesn't exist.
-        console.error("Error updating document: ", error);
-      });
-  }
+   
+      
+  
   function handelKeyDown(e) {
     console.log("Key event", e);
     if (e.code === 'Enter') e.preventDefault();
   }
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!isEmpty(id.match.params.id)) {
-      console.log("have id", id);
-      editePostInDB();
-    } else {
-      console.log("havent id", id);
-      writeUserInDB()
-    }
-  }
+ 
 
     function uploadImgae(docId){
       console.log("image path", imagePath);
