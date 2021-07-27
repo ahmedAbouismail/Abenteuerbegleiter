@@ -87,10 +87,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CreatePost= ({currentUser, id})=>{
-    const [state, setstate] = React.useState(initialState);
-    const [location, setLocation] = React.useState(initialPlaceState);
-    const [message, setMessage] = React.useState("");
+const CreatePost = ({ currentUser, id }) => {
+  const [state, setstate] = React.useState(initialState);
+  const [location, setLocation] = React.useState(initialPlaceState);
+  const [message, setMessage] = React.useState("");
 
     const [returnedPost, setReturnedPost] = React.useState();
     const [image, setImage] = React.useState({url: null});
@@ -163,8 +163,8 @@ const CreatePost= ({currentUser, id})=>{
     }
   }
 
-    function getPostByPostId(){
-      var post = projectFirestore.collection("posts").doc(currentUser.id)
+  function getPostByPostId() {
+    var post = projectFirestore.collection("posts").doc(currentUser.id)
       .collection("postsData")
       .doc(id.match.params.id).get().then((res)=>{
           const title = res.data().title;
@@ -173,12 +173,12 @@ const CreatePost= ({currentUser, id})=>{
           setstate({...state, "postTitle": title, "postText": context, "imageUrl": imageUrl})
           setReturnedPost(res.data());
       })
-    }
+  }
 
-    useEffect(()=>{
-      if(!isEmpty(id.match.params.id)){
-        getPostByPostId();
-      }  
+  useEffect(() => {
+    if (!isEmpty(id.match.params.id)) {
+      getPostByPostId();
+    }
   }, [])
 
   function beforeWriteInDB(){
@@ -261,7 +261,30 @@ const CreatePost= ({currentUser, id})=>{
           // writeUserInDB();
           beforeWriteInDB();
         }
+      }
+    })
+      .then(() => {
+        console.log("Document successfully updated!");
+      })
+      .catch((error) => {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+      });
+  }
+  function handelKeyDown(e) {
+    console.log("Key event", e);
+    if (e.code === 'Enter') e.preventDefault();
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!isEmpty(id.match.params.id)) {
+      console.log("have id", id);
+      editePostInDB();
+    } else {
+      console.log("havent id", id);
+      writeUserInDB()
     }
+  }
 
     function uploadImgae(docId){
       console.log("image path", imagePath);
