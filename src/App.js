@@ -56,13 +56,13 @@ function App({ currentUser, setCurrentUser }) {
         {currentUser ?
           <Switch>
             <Route exact path="/profile" component={ProfilePage} />
-            <Route exact path="/createPost" component={PostPage} />
+            <Route exact path="/createPost/:id?" render={(id) => <PostPage id={id}  /> }/>
             <Route exact path="/posts" component={postsPage} />
             <Route exact path="/chats" component={ChatsPage} />
           </Switch> :
           <Route path="/:somePath" component={PageNotFound} />}
 
-        {currentUser ?
+        {/* {currentUser ?
           <Route exact path="/creatPost/:id?" render={(id) => <PostPage id={id} /> }/> :
           <Route path="/:somePath" component={PageNotFound} />
         }
@@ -70,7 +70,7 @@ function App({ currentUser, setCurrentUser }) {
         {currentUser ?
           <Route exact path="/posts" component={postsPage}/> :
           <Route path="/:somePath" component={PageNotFound} />
-        }
+        } */}
       </Switch>
     </div>
   )

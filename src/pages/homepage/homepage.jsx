@@ -6,7 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 import DefaultAvatar from "../../assets/default-avatar.svg"
-
+import Post from '../../reuseable-components/post/post'
 import "./_homepage.scss"
 
 const Homepage = ({ currentUser }) => {
@@ -21,7 +21,7 @@ const Homepage = ({ currentUser }) => {
                 <h1>{currentUser.displayName}</h1>
             </div>
             <div className="middle">
-                sdfsdf
+                <Post/>
             </div>
             <div className="right">
                 löskdjfsdf
