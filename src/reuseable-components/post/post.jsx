@@ -36,6 +36,7 @@ import { Redirect, Route, useHistory  } from "react-router-dom";
 import PostPage from "../../pages/creatPost-page/creatPost-page"
 import { Remove, Sync } from '@material-ui/icons';
 import Grid from '@material-ui/core/Grid';
+import ChatIcon from '@material-ui/icons/Chat';
 
 // import {ReadAllPostsFromDB} from './Db'
 const useStyles = makeStyles((theme) => ({
@@ -74,13 +75,20 @@ const postState = [{
     postId: null,
     title: null,
     context: null,
-    loaction: null,
+    location: null,
     imageUrl: null,
     like: null,
     likesCount: null,
     createdTimestamp: null,
 }]
 
+const userState = [{
+  email: null,
+  id: null,
+  phoneNumber: null,
+  picUrl: null,
+  displayName: null,
+}]
 const ITEM_HEIGHT = 48;
 
 var ev = null;
@@ -93,9 +101,11 @@ const Post = ({currentUser}) => {
   const [like, setLike] = React.useState(false);
   const [docu, setDocu] = React.useState();
   const newState = []
+  const newUser = []
   const [avatar, setAvatar] = React.useState();
   const [likeEvent, setLikeEvent] = React.useState();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [userData, setUserData] = React.useState(userState);
   const open = Boolean(anchorEl);
 
   const [selectedP, setSelectedPostId] = React.useState(null);
@@ -113,14 +123,15 @@ const Post = ({currentUser}) => {
             const ownerId = doc.data().userId
             const title = doc.data().title
             const context = doc.data().context
-            const loaction = doc.data().loaction
+            const location = doc.data().location
+
             const imageUrl = doc.data().imageUrl
             const likes = doc.data().likes
             const createdTimestamp = doc.data().createdTimestamp
    
             const count = likes == null ? 0 : likes.length;
-            // const count = likes.length > 0? likes.length : null; 
-            console.log("POst url", imageUrl);
+            
+            console.log("locar", location.location.name);
             var likeStatus = false;
             if(!isEmpty(likes)){
               likes.forEach((like)=>{
@@ -130,7 +141,7 @@ const Post = ({currentUser}) => {
                 }
               })
             }
-            newState.push({"ownerId": ownerId ,"postId": doc.id, 'title': title, 'context': context, 'loaction': loaction, "imageUrl" : imageUrl, "like":likeStatus, "likesCount": count, "createdTimestamp": createdTimestamp.toDate().toString()})
+            newState.push({"ownerId": ownerId ,"postId": doc.id, 'title': title, 'context': context, 'location': location.location.name, "imageUrl" : imageUrl, "like":likeStatus, "likesCount": count, "createdTimestamp": createdTimestamp.toDate().toString()})
             console.log(doc.id, ' => ', doc.data().title);
         });
     })
@@ -141,12 +152,30 @@ const Post = ({currentUser}) => {
     })
   }
 
+  function getUserData(){
+    const data = projectFirestore.collection("users").get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const email = doc.data().email
+        const id = doc.data().id
+        const phoneNumber = doc.data().phoneNumber
+        const picUrl = doc.data().picUrl
+        const displayName = doc.data().displayName
+        newUser.push({"email": email, "id": id, "phoneNumber": phoneNumber, "picUrl": picUrl, "displayName": displayName})
+      });
+  }).then(()=>{
+    setUserData(newUser)
+  });
+    
+  }
+
   useEffect(()=>{
-      readAllPostsFromDB();   
+      readAllPostsFromDB();  
+      getUserData();
       // eslint-disable-next-line  
   }, [])
- 
 
+  
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -260,30 +289,15 @@ const Post = ({currentUser}) => {
     }
   };
 
-  function getUserAvatar(ownerId){
-      if (!isEmpty(ownerId)) {
-        const img = projectFirestore.collection("users").doc(ownerId).get()
-      .then((res)=>{
-        console.log("Ima",res.data().picUrl);
-        
-        if(res.exists){
-     
-        }else{
-          console.log("Rong");
-          return "Something Rong"
-        }
-      })
-      }
-    
+  function openChat(){
+    history.push("/chats")
   }
-
   return (
       <>
 
     
     {// eslint-disable-next-line
-    !isEmpty(postData), console.log("empty") &&
-    console.log("is nit empty"),
+    !isEmpty(postData)&&
         postData.map((post)=>(
           <Grid
             container
@@ -299,14 +313,21 @@ const Post = ({currentUser}) => {
 
          
             <Card className={classes.root}>
+             
             <CardHeader
-              avatar={
-                <Avatar
-                 aria-label="recipe"
-                 src={getUserAvatar(post.ownerId)}
-                 className={classes.avatar}
-                 />
-              }
+                avatar={!isEmpty(userData) && 
+                  userData.map((data)=>(
+                    <div>
+                     {data.id === post.ownerId &&
+                        <Avatar
+                        aria-label="recipe"
+                        src={data.picUrl}
+                        className={classes.avatar}
+                        /> 
+                     }
+                    </div>
+                  )) 
+                 }
               action=
                 
                     {post.ownerId === currentUser.id &&
@@ -352,20 +373,44 @@ const Post = ({currentUser}) => {
                         </Menu>
                     </div>
                 }
-                    
+                   
               title={post.title}
               subheader={post.createdTimestamp}
             />
+            
+            
             <CardMedia
               className={classes.media}
               image={post.imageUrl}
-              title="Paella dish"
             />
             <CardContent>
-              <Typography variant="body2" color="textSecondary" component="p">
+              <Typography variant="body2" color="textPrimary" component="p">
                {post.context}
               </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                Destination: {post.location}
+              </Typography>
+             
+              {!isEmpty(userData) &&
+              userData.map((data)=>(
+                <div>
+                  {data.id === post.ownerId &&
+                  <div>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        Name: {data.displayName}
+                      </Typography> 
+                     <Typography variant="body2" color="textSecondary" component="p">
+                        Email: {data.email}
+                     </Typography>
+                     </div>
+                  }
+                </div>
+                
+              ))
+              }
+           
             </CardContent>
+            
             <CardActions disableSpacing>
               <IconButton
                id={post.postId}
@@ -376,9 +421,12 @@ const Post = ({currentUser}) => {
                 <p style={{fontSize: 15, color: 'black'}}> {" " + post.likesCount}</p>
               </IconButton>
               <IconButton aria-label="share">
-                <ShareIcon />
+                <ChatIcon
+                 onClick={openChat}/>
               </IconButton>
             </CardActions>
+
+          
           </Card>
           </Container>
         </Grid>

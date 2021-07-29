@@ -411,6 +411,7 @@ const CreatePost = ({ currentUser, id }) => {
             // <p>Your old destination was {returnedPost.location.location.name} enter a new destination if you want to change it</p>
             }
             
+            
            
             
             <TextField 
