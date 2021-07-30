@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 // import { Link } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ import "./_homepage.scss"
 
 const Homepage = ({ currentUser }) => {
 
+    const [searchLoc, setSearchLoc] = useState("")
+
     return (
         <div className="homepage">
             <div className="left">
@@ -21,10 +23,18 @@ const Homepage = ({ currentUser }) => {
                 <h1>{currentUser.displayName}</h1>
             </div>
             <div className="middle">
-                <Post/>
+                <input 
+                    className="search-location"
+                    value={searchLoc}
+                    onChange={(e) => setSearchLoc(e.target.value)}
+                    placeholder="Search for a place"
+                />
+                <div className="posts">
+                    <Post searchLoc={searchLoc} />
+                </div>
             </div>
             <div className="right">
-                löskdjfsdf
+
             </div>
         </div>
     );
