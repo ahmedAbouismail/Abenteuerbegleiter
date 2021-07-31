@@ -10,13 +10,13 @@ import ProfilePage from "./pages/profile-page/profile-page";
 import PostPage from './pages/creatPost-page/creatPost-page'
 import postsPage from './pages/posts-page/postsPage'
 import ChatsPage from "./pages/chats-page/chats-page";
+import AboutPage from "./pages/about-page/about-page";
 
 import { projectAuth } from "./firebase/config";
 import { projectFirestore } from "./firebase/config";
 
 import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
-
 
 import './App.css';
 
@@ -52,25 +52,15 @@ function App({ currentUser, setCurrentUser }) {
             <Homepage /> :
             <AuthPage />}
         />
-
-        {currentUser ?
+        <Route exact path="/about" component={AboutPage} />
+        <Route path="/:somePath" component={PageNotFound} />
+        {currentUser &&
           <Switch>
             <Route exact path="/profile" component={ProfilePage} />
-            <Route exact path="/createPost/:id?" render={(id) => <PostPage id={id}  /> }/>
+            <Route exact path="/createPost/:id?" render={(id) => <PostPage id={id} />} />
             <Route exact path="/posts" component={postsPage} />
             <Route exact path="/chats" component={ChatsPage} />
-          </Switch> :
-          <Route path="/:somePath" component={PageNotFound} />}
-
-        {/* {currentUser ?
-          <Route exact path="/creatPost/:id?" render={(id) => <PostPage id={id} /> }/> :
-          <Route path="/:somePath" component={PageNotFound} />
-        }
-
-        {currentUser ?
-          <Route exact path="/posts" component={postsPage}/> :
-          <Route path="/:somePath" component={PageNotFound} />
-        } */}
+          </Switch>}
       </Switch>
     </div>
   )
