@@ -219,7 +219,9 @@ const Rooms = ({
                         >
                             <span>
                                 {
-                                    room.uids && getPerson(room.uids).displayName.substr(0, 10)
+                                    room.uids && (getPerson(room.uids).displayName.length > 10 ? 
+                                    getPerson(room.uids).displayName.substr(0, 10) + "..." : 
+                                    getPerson(room.uids).displayName)
                                 }
                             </span>
                             <div className="img-wrap">
