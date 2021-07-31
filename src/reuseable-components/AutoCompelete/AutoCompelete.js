@@ -6,7 +6,7 @@ import Marker from '../Marker/Marker';
 
 // examples:
 import GoogleMap from '../google-map/GoogleMap';
-import AutoComplete from '../google-autocomplete/Autocomplete';
+
 
 // consts
 import LOS_ANGELES_CENTER from '../../const/la_center';
@@ -37,9 +37,9 @@ class Autocomplete extends Component {
   };
 
   render() {
-    const {
-      places, mapApiLoaded, mapInstance, mapApi,
-    } = this.state;
+    // const {
+    //   places, mapApiLoaded, mapInstance, mapApi,
+    // } = this.state;
     return (
       <>
       <div>

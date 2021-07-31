@@ -16,9 +16,7 @@ import "firebase/firestore"
 import firebase from "firebase/app"
 import "../../pages/auth-page/_auth-page.scss"
 // eslint-disable-next-line
-import postsPage from '../../pages/posts-page/postsPage';
 // eslint-disable-next-line
-import { stat } from '@nodelib/fs.stat';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
@@ -26,12 +24,10 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Alert from '@material-ui/lab/Alert';
 import placeholder from "../../assets/placeholder-image.png"
 import Grid from '@material-ui/core/Grid';
-import zIndex from '@material-ui/core/styles/zIndex';
 import { Typography } from '@material-ui/core';
 import Container from "@material-ui/core/Container";
 import AutoComplete from '../google-autocomplete/Autocomplete';
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
 const initialState = {
@@ -98,7 +94,6 @@ const CreatePost = ({ currentUser, id }) => {
     const [returnedPost, setReturnedPost] = React.useState();
     const [image, setImage] = React.useState({url: null});
     const [imagePath, setImagePath] = React.useState();
-    const [downloadUrl, setDownloadURL] = React.useState();
 
     const[warning, setWarning] = React.useState(false);
     
@@ -270,10 +265,6 @@ const CreatePost = ({ currentUser, id }) => {
    
       
   
-  function handelKeyDown(e) {
-    console.log("Key event", e);
-    if (e.code === 'Enter') e.preventDefault();
-  }
  
 
     function uploadImgae(docId){
@@ -281,7 +272,6 @@ const CreatePost = ({ currentUser, id }) => {
       console.log("image", image);
       const storageRef = projectStorage.ref("posts").child(`${currentUser.id}` + "&" +`${docId}`);
 
-      const uploadTask = null;
       if (!isEmpty(state["imageUrl"]) && !isEmpty(image["url"])) {
         // uploadTask = storageRef.put(placeholder);
       }
@@ -299,6 +289,7 @@ const CreatePost = ({ currentUser, id }) => {
             case firebase.storage.TaskState.RUNNING: 
               console.log('Upload is running');
               break;
+            default: console.log('Upload is chrashed'); break;
             }
         }, 
           (error) => {

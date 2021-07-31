@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import Input from '@material-ui/core/Input';
-import {MDCTextField} from '@material/textfield';
 // import  "./_google-autocomplete.scss";
 
 const Wrapper = styled.div`

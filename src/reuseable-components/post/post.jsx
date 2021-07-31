@@ -1,44 +1,35 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Container from "@material-ui/core/Container";
-
 import { projectFirestore, projectStorage } from "../../firebase/config"
 import "firebase/firestore"
 import firebase from "firebase/app"
 import { connect } from 'react-redux';
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
-// eslint-disable-next-line
-import { firestoreConnect, isEmpty } from 'react-redux-firebase'
-// eslint-disable-next-line
-import { compose } from 'redux'
+import { isEmpty } from 'react-redux-firebase'
 import Menu from '@material-ui/core/Menu';
 import Fade from '@material-ui/core/Fade';
 import MenuItem from '@material-ui/core/MenuItem';
-// eslint-disable-next-line
-import { Redirect, Route, useHistory } from "react-router-dom";
-// eslint-disable-next-line
-import PostPage from "../../pages/creatPost-page/creatPost-page"
-import { Remove, Sync } from '@material-ui/icons';
+import { useHistory } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import ChatIcon from '@material-ui/icons/Chat';
 
-// import {ReadAllPostsFromDB} from './Db'
+
+
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: 100,
@@ -91,28 +82,19 @@ const userState = [{
 }]
 const ITEM_HEIGHT = 48;
 
-var ev = null;
 const Post = ({ currentUser, searchLoc }) => {
   let history = useHistory();
 
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
   const [postData, setPostData] = React.useState(postState);
   const [tempPostData, setTempPostData] = React.useState([])
-  const [like, setLike] = React.useState(false);
-  const [docu, setDocu] = React.useState();
   const newState = []
   const newUser = []
-  const [avatar, setAvatar] = React.useState();
-  const [likeEvent, setLikeEvent] = React.useState();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [userData, setUserData] = React.useState(userState);
   const open = Boolean(anchorEl);
 
   const [selectedP, setSelectedPostId] = React.useState(null);
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   const redirect = (id) => {
     history.push(`/createPost/${id}`)
@@ -173,8 +155,6 @@ const Post = ({ currentUser, searchLoc }) => {
   useEffect(() => {
     readAllPostsFromDB();
     getUserData();
-
-    // eslint-disable-next-line  
   }, [])
 
   useEffect(() => {
@@ -206,7 +186,6 @@ const Post = ({ currentUser, searchLoc }) => {
   };
 
   function checkLikeStatus(event) {
-    const x = event;
     var d = null;
     var c = null;
     const post = projectFirestore.collectionGroup("postsData")
@@ -332,19 +311,22 @@ const Post = ({ currentUser, searchLoc }) => {
               spacing={3}
             >
               <Container
+                key={4}
                 // maxWidth="sm" 
                 style={{ width: "50vw", hight: "100%" }}
               >
 
 
-                <Card className={classes.root}>
+                <Card key={5} className={classes.root}>
 
                   <CardHeader
+                  key={6}
                     avatar={!isEmpty(userData) &&
                       userData.map((data) => (
                         <div>
                           {data.id === post.ownerId &&
                             <Avatar
+                              key={"Avatar"}
                               aria-label="recipe"
                               src={data.picUrl}
                               className={classes.avatar}
@@ -358,15 +340,17 @@ const Post = ({ currentUser, searchLoc }) => {
                     {post.ownerId === currentUser.id &&
                       <div>
                         <IconButton
-
+                          key={7}
                           id={post.postId}
                           aria-label="settings"
                           aria-controls="long-menu"
                           aria-haspopup="true"
                           onClick={handleClick}>
-                          <MoreVertIcon />
+                          <MoreVertIcon 
+                          key={"MoreVertIcon "}/>
                         </IconButton>
                         <Menu
+                          key={8}
                           id={"Long"}
                           anchorEl={anchorEl}
                           keepMounted
@@ -403,16 +387,23 @@ const Post = ({ currentUser, searchLoc }) => {
                     subheader={post.createdTimestamp}
                   />
 
-
                   <CardMedia
-                    className={classes.media}
+                    key={9}
+                    component="img"
+                    alt="Contemplative Reptile"
+                    height="500"
                     image={post.imageUrl}
+                    title="Contemplative Reptile"
                   />
-                  <CardContent>
-                    <Typography variant="body2" color="textPrimary" component="p">
+
+               
+                  <CardContent
+                    key={10}
+                  >
+                    <Typography key={11} variant="body2" color="textPrimary" component="p">
                       {post.context}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
+                    <Typography key={12} variant="body2" color="textSecondary" component="p">
                       Destination: {post.location}
                     </Typography>
 
@@ -421,10 +412,10 @@ const Post = ({ currentUser, searchLoc }) => {
                         <div>
                           {data.id === post.ownerId &&
                             <div>
-                              <Typography variant="body2" color="textSecondary" component="p">
+                              <Typography key={13} variant="body2" color="textSecondary" component="p">
                                 Name: {data.displayName}
                               </Typography>
-                              <Typography variant="body2" color="textSecondary" component="p">
+                              <Typography key={14} variant="body2" color="textSecondary" component="p">
                                 Email: {data.email}
                               </Typography>
                             </div>
@@ -436,18 +427,20 @@ const Post = ({ currentUser, searchLoc }) => {
 
                   </CardContent>
 
-                  <CardActions disableSpacing>
+                  <CardActions key={15} disableSpacing>
                     <IconButton
+                      key={16}
                       id={post.postId}
                       aria-label="Like"
                       onClick={handleLike}
                     >
-                      {(post.like == true) ? <FavoriteIcon style={{ color: red[500] }} /> : <FavoriteIcon />}
+                      {(post.like === true) ? <FavoriteIcon key={19} style={{ color: red[500] }} /> : <FavoriteIcon />}
                       <p style={{ fontSize: 15, color: 'black' }}> {" " + post.likesCount}</p>
                     </IconButton>
-                    <IconButton aria-label="share">
+                    <IconButton key={17} onClick={openChat}  aria-label="share">
                       <ChatIcon
-                        onClick={openChat} />
+                        key={18}
+                        />
                     </IconButton>
                   </CardActions>
 
@@ -457,14 +450,15 @@ const Post = ({ currentUser, searchLoc }) => {
             </Grid>
           )) :
           <Grid
+            key={20}
             container
             direction="column"
             alignItems="center"
             justify="center"
             spacing={3}
           >
-            <Container style={{ width: "50vw", hight: "50vh" }} >
-              <Card className={classes.root} style={{height: "75vh", backgroundColor: "transparent", boxShadow: "none"}}>
+            <Container key={21} style={{ width: "50vw", hight: "50vh" }} >
+              <Card key={22} className={classes.root} style={{height: "75vh", backgroundColor: "transparent", boxShadow: "none"}}>
                 <h1>not found</h1>
               </Card>
             </Container>

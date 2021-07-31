@@ -2,8 +2,8 @@ import React from 'react'
 import './_creatPost-page.scss'
 import Grid from '@material-ui/core/Grid';
 import CreatePost from '../../reuseable-components/postForm/postForm'
-import { Typography } from '@material-ui/core';
-import { blue } from '@material-ui/core/colors';
+
+
 
 const PostPage = ({id})=>{
 
