@@ -53,14 +53,15 @@ function App({ currentUser, setCurrentUser }) {
             <AuthPage />}
         />
         <Route exact path="/about" component={AboutPage} />
-        <Route path="/:somePath" component={PageNotFound} />
-        {currentUser &&
+
+        {currentUser ?
           <Switch>
             <Route exact path="/profile" component={ProfilePage} />
             <Route exact path="/createPost/:id?" render={(id) => <PostPage id={id} />} />
             <Route exact path="/posts" component={postsPage} />
             <Route exact path="/chats" component={ChatsPage} />
-          </Switch>}
+          </Switch> :
+          <Route path="/:somePath" component={PageNotFound} />}
       </Switch>
     </div>
   )
