@@ -69,7 +69,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
             </div>
             <div className={`dropdown-menus ${!openDropdown && "hidden"}`}>
                 <div className="dropdown-menu" onClick={toCreatePost}>
-                    <i class="fas fa-plus"></i>
+                    <i className="fas fa-plus"></i>
                     <span>Create Post</span>
                 </div>
                 <div className="dropdown-menu" onClick={toProfile}>

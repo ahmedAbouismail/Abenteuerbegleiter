@@ -27,6 +27,7 @@ const Rooms = ({
     const [name, setName] = useState("")
     const [rooms, setRooms] = useState([])
     const [contactedPeople, setContactedPeople] = useState([])
+    const [allUsers, setAllUsers] = useState([])
 
     useEffect(() => {
         chatRooms
@@ -63,19 +64,40 @@ const Rooms = ({
         })
     }, [rooms, currentUser.id])
 
+    useEffect(() => {
+        users.onSnapshot((querySnapshot) => {
+            const items = []
+            querySnapshot.forEach(doc => {
+                items.push(doc.data())
+            })
+            setAllUsers(items)
+        })
+    }, [])
+
     const searchAccount = (e) => {
         const tempName = e.target.value
         setName(tempName)
 
-        users
-            .where("displayName", "==", tempName)
-            .onSnapshot((querySnapshot) => {
-                const items = [];
-                querySnapshot.forEach(doc => {
-                    items.push(doc.data())
-                })
-                setFoundAccounts(items)
-            })
+        // users
+        //     .where("displayName", "==", tempName)
+        //     .onSnapshot((querySnapshot) => {
+        //         const items = [];
+        //         querySnapshot.forEach(doc => {
+        //             items.push(doc.data())
+        //         })
+        //         setFoundAccounts(items)
+        //     })
+
+        if (name && allUsers && allUsers.length > 0) {
+            const lowerCase = tempName.toLowerCase()
+            const tempArray = allUsers
+            const filtered = tempArray.filter(item => item.displayName && item.displayName.toLowerCase().includes(lowerCase))
+            // console.log(filtered);
+            setFoundAccounts(filtered)
+        } else {
+            console.log("empty serach box");
+            setFoundAccounts([])
+        }
     }
 
     const selectUserToChatWith = (otherAccount) => {
@@ -174,7 +196,9 @@ const Rooms = ({
                                     key={a}
                                     onClick={() => selectUserToChatWith(account)}
                                 >
-                                    <span>{account.displayName}</span>
+                                    <span>{account.displayName.length > 10 ?
+                                        account.displayName.substr(0, 10) + "..." :
+                                        account.displayName}</span>
                                     <div className="img-wrap">
                                         {account.picUrl ? <img src={account.picUrl} alt="profile-pic" /> :
                                             <img src={DefaultAvatar} alt="default-avatar" />}

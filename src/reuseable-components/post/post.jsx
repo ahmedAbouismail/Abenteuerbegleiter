@@ -302,28 +302,29 @@ const Post = ({ currentUser, searchLoc }) => {
 
       {// eslint-disable-next-line
         !isEmpty(postData) ?
-          postData.map((post) => (
+          postData.map((post, i) => (
             <Grid
               container
               direction="column"
               alignItems="center"
               justify="center"
               spacing={3}
+              key={"grid" + i}
             >
               <Container
-                key={4}
+                key={"container" + 4}
                 // maxWidth="sm" 
                 style={{ width: "50vw", hight: "100%" }}
               >
 
 
-                <Card key={5} className={classes.root}>
+                <Card key={"card" + i} className={classes.root}>
 
                   <CardHeader
-                  key={6}
+                  key={"cardheader" + i}
                     avatar={!isEmpty(userData) &&
-                      userData.map((data) => (
-                        <div>
+                      userData.map((data, d) => (
+                        <div key={"dataheader" + d}>
                           {data.id === post.ownerId &&
                             <Avatar
                               key={"Avatar"}
@@ -408,8 +409,8 @@ const Post = ({ currentUser, searchLoc }) => {
                     </Typography>
 
                     {!isEmpty(userData) &&
-                      userData.map((data) => (
-                        <div>
+                      userData.map((data, indexData) => (
+                        <div key={"contentdata" + indexData}>
                           {data.id === post.ownerId &&
                             <div>
                               <Typography key={13} variant="body2" color="textSecondary" component="p">
