@@ -136,6 +136,7 @@ const Post = ({ currentUser, searchLoc }) => {
   }
 
   function getUserData() {
+    //eslint-disable-next-line
     const data = projectFirestore.collection("users").get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -151,10 +152,11 @@ const Post = ({ currentUser, searchLoc }) => {
       });
 
   }
-
+  //eslint-disable-next-line
   useEffect(() => {
     readAllPostsFromDB();
     getUserData();
+    //eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -176,6 +178,7 @@ const Post = ({ currentUser, searchLoc }) => {
       console.log("empty search box");
       setPostData(tempPostData)
     }
+    //eslint-disable-next-line
   }, [searchLoc])
 
   const handleClick = (event) => {
@@ -188,6 +191,7 @@ const Post = ({ currentUser, searchLoc }) => {
   function checkLikeStatus(event) {
     var d = null;
     var c = null;
+    //eslint-disable-next-line
     const post = projectFirestore.collectionGroup("postsData")
       .where("postId", "==", event.currentTarget.id).get()
       .then((res) => {
@@ -225,6 +229,7 @@ const Post = ({ currentUser, searchLoc }) => {
 
   function putLike(d) {
     console.log("Put Like Function");
+    //eslint-disable-next-line
     const like = d.ref.update({
       likes: firebase.firestore.FieldValue.arrayUnion({
         id: currentUser.id,
@@ -238,6 +243,7 @@ const Post = ({ currentUser, searchLoc }) => {
 
   function removeLike(d) {
     console.log("Remove Function");
+    //eslint-disable-next-line
     const like = d.ref.update({
       likes: firebase.firestore.FieldValue.arrayRemove({
         id: currentUser.id,
@@ -259,6 +265,7 @@ const Post = ({ currentUser, searchLoc }) => {
 
     switch (event.currentTarget.innerText) {
       case "Edit":
+        //eslint-disable-next-line
         const editRes = projectFirestore.collection("posts").doc(currentUser.id)
           .collection("postsData")
           .doc(selectedP).get().then((res) => {
@@ -267,6 +274,7 @@ const Post = ({ currentUser, searchLoc }) => {
           });
         break;
       case "Delete":
+        //eslint-disable-next-line
         const deleteRes = projectFirestore.collection("posts")
           .doc(currentUser.id).collection("postsData").doc(selectedP)
           .delete().then(() => {

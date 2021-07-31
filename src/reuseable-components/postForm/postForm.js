@@ -202,6 +202,7 @@ const CreatePost = ({ currentUser, id }) => {
     function writePostInDB(){
         setFinish(false);
         const timestamp = firebase.firestore.Timestamp.fromDate(new Date()).toDate();
+        //eslint-disable-next-line
         const result = projectFirestore.collection("posts")
                       .doc(currentUser.id)
                       .collection("postsData")
@@ -270,6 +271,7 @@ const CreatePost = ({ currentUser, id }) => {
     function uploadImgae(docId){
       console.log("image path", imagePath);
       console.log("image", image);
+      //eslint-disable-next-line
       const storageRef = projectStorage.ref("posts").child(`${currentUser.id}` + "&" +`${docId}`);
 
       if (!isEmpty(state["imageUrl"]) && !isEmpty(image["url"])) {
